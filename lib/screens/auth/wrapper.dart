@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:uniten_alumni_app/models/user.dart';
 //import 'package:uniten_alumni_app/screens/auth/main/home.dart';
 import 'package:uniten_alumni_app/screens/auth/main/navmenu.dart';
-import 'package:uniten_alumni_app/screens/auth/main/post.dart';
+import 'package:uniten_alumni_app/screens/auth/main/posts.dart';
 import 'package:uniten_alumni_app/screens/auth/signup.dart';
 
 class Wrapper extends StatelessWidget {
@@ -13,7 +13,13 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
 
-    print(user);
+    if (user == null) {
+      return const SignUp(); // Show SignUp screen if user is not authenticated
+    } else {
+      return const NavMenu(); // Show NavMenu if user is authenticated
+    }
+
+    /*print(user);
     if (user == null) {
       return SignUp(); // Or any other appropriate screen for non-authenticated users
     } else {
@@ -21,12 +27,11 @@ class Wrapper extends StatelessWidget {
       return MaterialApp(
         initialRoute: '/',
         routes: {
-          '/' : (context) => NavMenu(),
+          '/' : (context) => const NavMenu(),
           '/post' : (context) => Posts(),
         }
       );
-      //return NavMenu(); // Show main system routes
-    }
+    } */
   }
-    //return Home();
+
   }

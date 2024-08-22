@@ -4,7 +4,7 @@ import 'package:uniten_alumni_app/screens/auth/main/benefits.dart';
 import 'package:uniten_alumni_app/screens/auth/main/connectalumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/homepage.dart';
 import 'package:uniten_alumni_app/screens/auth/main/mycard.dart';
-import 'package:uniten_alumni_app/screens/auth/main/post.dart';
+import 'package:uniten_alumni_app/screens/auth/main/posts.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile.dart';
 import 'package:uniten_alumni_app/services/auth.dart';
 
@@ -145,6 +145,18 @@ class _NavMenuState extends State<NavMenu> {
 
                   },
                 ),
+                const Divider( //create black divider in the hamburger menu
+                  color: Colors.black,
+                  height: 5.0,
+                ),
+                 ListTile( //link to My Interest Groups in hamburger menu
+                  title: const Text('Sign Out'),
+                  selected: currentPage == 4,
+                  onTap: ()  {
+                    _authService.signOut();
+
+                  },
+                ),
 
 
             ]),),
@@ -210,4 +222,5 @@ class _NavMenuState extends State<NavMenu> {
     );
   }
   
-}
+} 
+
