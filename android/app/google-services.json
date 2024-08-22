@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "656448382491",
+    "project_id": "unitenalumniapp",
+    "storage_bucket": "unitenalumniapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656448382491:android:4bdd93ab30cb7daa02babe",
+        "android_client_info": {
+          "package_name": "com.example.uniten_alumni_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0t2zLP_vfVatKvxU-w9Mr7bEZko8HjNU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
