@@ -117,7 +117,6 @@ class _AlumniState extends State<Alumni> {
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/connectalumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/posts_and_interest_groups.dart';
-import 'package:uniten_alumni_app/screens/auth/main/posts.dart';
 
 class Alumni extends StatefulWidget {
   const Alumni({super.key});

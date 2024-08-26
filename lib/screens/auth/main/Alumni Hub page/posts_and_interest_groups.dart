@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/addpost.dart'; // Ensure this import path is correct
+import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/Posts_and_Interest_Groups/addpost.dart'; // Ensure this import path is correct
 
 class PostsAndInterestGroups extends StatelessWidget {
   const PostsAndInterestGroups({super.key});
@@ -7,26 +7,27 @@ class PostsAndInterestGroups extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: DefaultTabController(
+      home: DefaultTabController( //creating a Tab
         length: 2,
-        child: Scaffold(
+        child: Scaffold( //Creating App Bar
           appBar: AppBar(
-            leading: IconButton(
+            leading: IconButton( //Creating back button, when pressed it goes back to Alumni hub
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.of(context).pop(); // Navigate back to the previous screen
               },
             ),
-            bottom: TabBar(
+            bottom: TabBar( //creating the tab itself
               tabs: [
                 Tab(text: 'Posts'),
                 Tab(text: 'Interest Groups'),
               ],
             ),
-            title: Text('Posts and Interest Groups'),
+            title: Text('Posts and Interest Groups'), //title that will display on the app bar
           ),
           body: TabBarView(
             children: [
+              //Post Tab Content
               Stack(
                 children: [
                   // Background Container
@@ -75,6 +76,8 @@ class PostsAndInterestGroups extends StatelessWidget {
                   ),
                 ],
               ),
+
+              //Interest Groups Tab Content
               Stack(
                 children: [
                   // Background Container

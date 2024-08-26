@@ -1039,13 +1039,16 @@ Drawer _buildDrawer(BuildContext context) {
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/posts_and_interest_groups.dart';
 import 'package:uniten_alumni_app/screens/auth/main/alumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/benefits.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/connectalumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/homepage.dart';
 import 'package:uniten_alumni_app/screens/auth/main/mycard.dart';
-import 'package:uniten_alumni_app/screens/auth/main/posts.dart';
-import 'package:uniten_alumni_app/screens/auth/main/profile.dart';
+import 'package:uniten_alumni_app/screens/auth/main/profile/profile.dart';
+import 'package:uniten_alumni_app/services/auth.dart';
+
+
 
 class NavMenu extends StatefulWidget {
   const NavMenu({Key? key}) : super(key: key);
@@ -1059,6 +1062,7 @@ class _NavMenuState extends State<NavMenu> {
   late ScrollController _scrollController1;
   late ScrollController _scrollController2;
   NavBarStyle _navBarStyle = NavBarStyle.style1; // Example style, choose as needed.
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
@@ -1100,87 +1104,115 @@ class _NavMenuState extends State<NavMenu> {
     );
   }
 
- List<Widget> _buildScreens() {
-  return [
-    Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
+  List<Widget> _buildScreens() {
+    return [
+      Scaffold(
+        appBar: AppBar(
+          title: Text('Profile'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {_authService.signOut();},
+            ),
+          ],
+        ),
+        drawer: _buildDrawer(context), 
+        body: Profile(),
       ),
-      drawer: _buildDrawer(context), // Add the drawer here
-      body: Profile(),
-    ),
-    Scaffold(
-      appBar: AppBar(
-        title: Text('My Card'),
+      Scaffold(
+        appBar: AppBar(
+          title: Text('My Card'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {_authService.signOut();},
+            ),
+          ],
+        ),
+        drawer: _buildDrawer(context), 
+        body: MyCard(),
       ),
-      drawer: _buildDrawer(context), // Add the drawer here
-      body: MyCard(),
-    ),
-    Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
+      Scaffold(
+        appBar: AppBar(
+          title: Text('Home'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {_authService.signOut();},
+            ),
+          ],
+        ),
+        drawer: _buildDrawer(context), 
+        body: HomePage(),
       ),
-      drawer: _buildDrawer(context), // Add the drawer here
-      body: HomePage(),
-    ),
-    Scaffold(
-      appBar: AppBar(
-        title: Text('Benefits'),
+      Scaffold(
+        appBar: AppBar(
+          title: Text('Benefits'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {_authService.signOut();},
+            ),
+          ],
+        ),
+        drawer: _buildDrawer(context), 
+        body: Benefits(),
       ),
-      drawer: _buildDrawer(context), // Add the drawer here
-      body: Benefits(),
-    ),
-    Scaffold(
-      appBar: AppBar(
-        title: Text('Alumni'),
+      Scaffold(
+        appBar: AppBar(
+          title: Text('Alumni'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {_authService.signOut();},
+            ),
+          ],
+        ),
+        drawer: _buildDrawer(context), 
+        body: Alumni(),
       ),
-      drawer: _buildDrawer(context), // Add the drawer here
-      body: Alumni(),
-    ),
-  ];
-}
+    ];
+  }
 
-Drawer _buildDrawer(BuildContext context) {
-  return Drawer(
-    child: ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        DrawerHeader(
-          decoration: BoxDecoration(
-            color: Colors.red,
-          ),
-          child: Text(
-            'Menu',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
+  Drawer _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.red,
+            ),
+            child: Text(
+              'Menu',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
-        ),
-        ListTile(
-          leading: Icon(Icons.group),
-          title: Text('Posts and Interest Groups'),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Posts()),
-            );
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.connect_without_contact),
-          title: Text('Connect Alumni'),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ConnectAlumni()),
-            );
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-
+          ListTile(
+            leading: Icon(Icons.group),
+            title: Text('Posts and Interest Groups'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => PostsAndInterestGroups()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.connect_without_contact),
+            title: Text('Connect Alumni'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ConnectAlumni()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
@@ -1266,7 +1298,6 @@ Drawer _buildDrawer(BuildContext context) {
       ),
     ];
   }
+
+
 }
-
-
-
