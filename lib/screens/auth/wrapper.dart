@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uniten_alumni_app/models/user.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/connectalumni.dart';
 //import 'package:uniten_alumni_app/screens/auth/main/home.dart';
 import 'package:uniten_alumni_app/screens/auth/main/navmenu.dart';
 import 'package:uniten_alumni_app/screens/auth/main/posts.dart';
@@ -16,8 +17,8 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return const SignUp(); // Show SignUp screen if user is not authenticated
     } else {
-      return const NavMenu(); // Show NavMenu if user is authenticated
-    }
+      return  NavMenu(); // Show NavMenu if user is authenticated
+    } 
 
     /*print(user);
     if (user == null) {
@@ -29,8 +30,9 @@ class Wrapper extends StatelessWidget {
         routes: {
           '/' : (context) => const NavMenu(),
           '/post' : (context) => Posts(),
+          '/connectalumni' : (context) => const ConnectAlumni(),
         }
-      );
+      ); 
     } */
   }
 

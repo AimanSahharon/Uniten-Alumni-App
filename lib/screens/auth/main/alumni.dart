@@ -115,8 +115,8 @@ class _AlumniState extends State<Alumni> {
 } */
 
 import 'package:flutter/material.dart';
-import 'package:uniten_alumni_app/screens/auth/main/connectalumni.dart';
-import 'package:uniten_alumni_app/screens/auth/main/mycard.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/connectalumni.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/posts_and_interest_groups.dart';
 import 'package:uniten_alumni_app/screens/auth/main/posts.dart';
 
 class Alumni extends StatefulWidget {
@@ -205,7 +205,7 @@ class _AlumniState extends State<Alumni> {
               // Navigate to MyCard when this button is tapped
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ConnectAlumni()),
+                MaterialPageRoute(builder: (context) => ConnectAlumni()),
               );
             }
 
@@ -213,7 +213,7 @@ class _AlumniState extends State<Alumni> {
               // Navigate to Posts when this button is tapped
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Posts()),
+                MaterialPageRoute(builder: (context) => const PostsAndInterestGroups()),
               );
             }
           },
