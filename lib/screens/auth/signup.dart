@@ -62,12 +62,12 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(height: 20),
                     ElevatedButton( //creates button
                       child: Text('Sign Up'),
-                      onPressed: () async => {_authService.singUp(email, password)}), //when pressed access the AuthService function called SignIn
+                      onPressed: () async => {_authService.signUp(email, password)}), //when pressed access the AuthService function called SignIn
 
                     SizedBox(height: 20),
                     ElevatedButton( //creates button
                       child: Text('Sign In'),
-                      onPressed: () async => {_authService.singIn(email, password)}) //when pressed access the AuthService function called SignIn 
+                      onPressed: () async => {_authService.signIn(email, password)}) //when pressed access the AuthService function called SignIn 
 
                     ] //placement text] //placement text
             

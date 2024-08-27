@@ -1,26 +1,30 @@
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:uniten_alumni_app/models/user.dart";
 
-class AuthService { //class to handle all the authentication
-FirebaseAuth auth = FirebaseAuth.instance;
+class AuthService { 
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   UserModel? _userFromFirebaseUser(User? user) {
-    return user != null ? UserModel(id: user.uid) : null; //
+    return user != null ? UserModel(id: user.uid) : null;
   }
 
-  Stream<UserModel?> get user{
+  Stream<UserModel?> get user {
     return auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
-  Future singUp(email, password) async { //to make user sign up new account
+  Future<UserModel?> signUp(String email, String password) async { 
     try {
-      User user = (await auth.createUserWithEmailAndPassword(
+      UserCredential user = (await auth.createUserWithEmailAndPassword(
         email: email, 
-        password: password
-        )) as User;
-
-
-      _userFromFirebaseUser(user); //if user is not null then return user model if not return null
+        password: password,
+      ));
+      
+      await FirebaseFirestore.instance
+      .collection('users')
+      .doc(user.user!.uid)
+      .set({'name': email, 'email': email});
+       _userFromFirebaseUser(user.user); 
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -30,32 +34,29 @@ FirebaseAuth auth = FirebaseAuth.instance;
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
-  Future singIn(email, password) async { //to make user sign up new account
+  Future<UserModel?> signIn(String email, String password) async { 
     try {
-      User user = (await auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email, 
-        password: password
-        )) as User;
-
-
-      _userFromFirebaseUser(user); //if user is not null then return user model if not return null
+        password: password,
+      );
+      return _userFromFirebaseUser(userCredential.user); 
     } on FirebaseAuthException catch (e) {
       print(e);
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
-
-  Future signOut() async {
+  Future<void> signOut() async {
     try {
       return await auth.signOut();
-
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
-      return null;
     }
   }
 }
