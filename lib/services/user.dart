@@ -7,6 +7,18 @@ import 'package:uniten_alumni_app/services/utils.dart'; // to use the image pick
 class UserService {
   final UtilsService _utilsService = UtilsService();
 
+  List<UserModel> _userListFromQuerySnapshot(QuerySnapshot<Map<String, dynamic>> snapshot) {
+    return snapshot.docs.map((doc) {
+      return UserModel(
+        id: doc.id,
+        bannerImageUrl: doc.data()?['bannerImageUrl'] ?? '',
+        profileImageUrl: doc.data()?['profileImageUrl'] ?? '',
+        name: doc.data()?['name'] ?? '',
+        email: doc.data()?['email'] ?? '',
+      );
+    }).toList();
+  }
+
   UserModel? _userFromFirebaseSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>?;
 
@@ -29,6 +41,18 @@ class UserService {
         .doc(uid)
         .snapshots()
         .map(_userFromFirebaseSnapshot);
+  }
+
+  // To search users
+  Stream<List<UserModel>> queryByName(String search) {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .orderBy("name") 
+        .startAt([search]) // If user search and type the first letter, start finding user starting those letters
+        .endAt([search + '\uf8ff'])
+        .limit(10) // Show 10 search results
+        .snapshots()
+        .map(_userListFromQuerySnapshot);
   }
 
   Future<void> updateProfile(File? bannerImage, File? profileImage, String name) async {

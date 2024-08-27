@@ -1035,7 +1035,7 @@ Drawer _buildDrawer(BuildContext context) {
   }
 } */
 
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -1049,8 +1049,6 @@ import 'package:uniten_alumni_app/screens/auth/main/profile/edit_profile.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile/profile.dart';
 import 'package:uniten_alumni_app/services/auth.dart';
 
-
-
 class NavMenu extends StatefulWidget {
   const NavMenu({Key? key}) : super(key: key);
 
@@ -1062,13 +1060,13 @@ class _NavMenuState extends State<NavMenu> {
   late PersistentTabController _controller;
   late ScrollController _scrollController1;
   late ScrollController _scrollController2;
-  NavBarStyle _navBarStyle = NavBarStyle.style1; // Example style, choose as needed.
+  final NavBarStyle _navBarStyle = NavBarStyle.style1; // Example style, choose as needed.
   final AuthService _authService = AuthService();
 
   @override
   void initState() {
     super.initState();
-    _controller = PersistentTabController(initialIndex: 2); //set Home page as default page when user is logged in
+    _controller = PersistentTabController(initialIndex: 2); // Set Home page as default page when user is logged in
     _scrollController1 = ScrollController();
     _scrollController2 = ScrollController();
   }
@@ -1084,9 +1082,8 @@ class _NavMenuState extends State<NavMenu> {
       resizeToAvoidBottomInset: true,
       stateManagement: true,
       hideNavigationBarWhenKeyboardAppears: true,
-      //popBehaviorOnSelectedNavBarItemPress: PopActionScreensType.all,
       padding: const EdgeInsets.only(top: 8),
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Colors.white,
       isVisible: true,
       animationSettings: const NavBarAnimationSettings(
         navBarItemAnimation: ItemAnimationSettings(
@@ -1109,68 +1106,68 @@ class _NavMenuState extends State<NavMenu> {
     return [
       Scaffold(
         appBar: AppBar(
-          title: Text('Profile'),
+          title: const Text('Profile'),
           actions: [
             IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {_authService.signOut();},
+              icon: const Icon(Icons.logout),
+              onPressed: () async { _authService.signOut(); },
             ),
           ],
         ),
-        drawer: _buildDrawer(context), 
-        body: Profile(),
+        drawer: _buildDrawer(context),
+        body: Profile(uid: FirebaseAuth.instance.currentUser!.uid),
       ),
       Scaffold(
         appBar: AppBar(
-          title: Text('My Card'),
+          title: const Text('My Card'),
           actions: [
             IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {_authService.signOut();},
+              icon: const Icon(Icons.logout),
+              onPressed: () async { _authService.signOut(); },
             ),
           ],
         ),
         drawer: _buildDrawer(context), 
-        body: MyCard(),
+        body: const MyCard(),
       ),
       Scaffold(
         appBar: AppBar(
-          title: Text('Home'),
+          title: const Text('Home'),
           actions: [
             IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {_authService.signOut();},
+              icon: const Icon(Icons.logout),
+              onPressed: () async { _authService.signOut(); },
             ),
           ],
         ),
         drawer: _buildDrawer(context), 
-        body: HomePage(),
+        body: const HomePage(),
       ),
       Scaffold(
         appBar: AppBar(
-          title: Text('Benefits'),
+          title: const Text('Benefits'),
           actions: [
             IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {_authService.signOut();},
+              icon: const Icon(Icons.logout),
+              onPressed: () async { _authService.signOut(); },
             ),
           ],
         ),
         drawer: _buildDrawer(context), 
-        body: Benefits(),
+        body: const Benefits(),
       ),
       Scaffold(
         appBar: AppBar(
-          title: Text('Alumni'),
+          title: const Text('Alumni'),
           actions: [
             IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {_authService.signOut();},
+              icon: const Icon(Icons.logout),
+              onPressed: () async { _authService.signOut(); },
             ),
           ],
         ),
         drawer: _buildDrawer(context), 
-        body: Alumni(),
+        body: const Alumni(),
       ),
     ];
   }
@@ -1180,7 +1177,7 @@ class _NavMenuState extends State<NavMenu> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.red,
             ),
@@ -1193,17 +1190,17 @@ class _NavMenuState extends State<NavMenu> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.group),
-            title: Text('Posts and Interest Groups'),
+            leading: const Icon(Icons.group),
+            title: const Text('Posts and Interest Groups'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => PostsAndInterestGroups()),
+                MaterialPageRoute(builder: (context) => const PostsAndInterestGroups()),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.connect_without_contact),
-            title: Text('Connect Alumni'),
+            leading: const Icon(Icons.connect_without_contact),
+            title: const Text('Connect Alumni'),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => ConnectAlumni()),
@@ -1218,87 +1215,40 @@ class _NavMenuState extends State<NavMenu> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('lib/assets/icons/profile.png')),
+        icon: const ImageIcon(AssetImage('lib/assets/icons/profile.png')),
         title: ("Profile"),
         activeColorPrimary: Colors.red,
-        inactiveColorPrimary:  CupertinoColors.systemGrey,
-        scrollController: _scrollController2,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
-          routes: {
-            "/Profile": (final context) => const Profile(),
-            "/MyCard": (final context) => const MyCard(),
-            "/Benefits": (final context) => const Benefits(),
-            "/Alumni": (final context) => const Alumni(),
-          },
-        ),
-      ),
-      PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('lib/assets/icons/mycard.png')),
-        title: ("MyCard"),
-        activeColorPrimary:  Colors.red,
         inactiveColorPrimary: CupertinoColors.systemGrey,
         scrollController: _scrollController2,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
-          routes: {
-            "/Profile": (final context) => const Profile(),
-            "/MyCard": (final context) => const MyCard(),
-            "/Benefits": (final context) => const Benefits(),
-            "/Alumni": (final context) => const Alumni(),
-          },
-        ),
       ),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('lib/assets/icons/home.png')),
+        icon: const ImageIcon(AssetImage('lib/assets/icons/mycard.png')),
+        title: ("MyCard"),
+        activeColorPrimary: Colors.red,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+        scrollController: _scrollController2,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const ImageIcon(AssetImage('lib/assets/icons/home.png')),
         title: ("Home"),
-        activeColorPrimary:  Colors.red,
+        activeColorPrimary: Colors.red,
         inactiveColorPrimary: CupertinoColors.systemGrey,
         scrollController: _scrollController1,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
-          routes: {
-            "/Profile": (final context) => const Profile(),
-            "/MyCard": (final context) => const MyCard(),
-            "/Benefits": (final context) => const Benefits(),
-            "/Alumni": (final context) => const Alumni(),
-          },
-        ),
       ),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('lib/assets/icons/benefit.png')),
+        icon: const ImageIcon(AssetImage('lib/assets/icons/benefit.png')),
         title: ("Benefits"),
-        activeColorPrimary:  Colors.red,
+        activeColorPrimary: Colors.red,
         inactiveColorPrimary: CupertinoColors.systemGrey,
         scrollController: _scrollController2,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
-          routes: {
-            "/Profile": (final context) => const Profile(),
-            "/MyCard": (final context) => const MyCard(),
-            "/Benefits": (final context) => const Benefits(),
-            "/Alumni": (final context) => const Alumni(),
-          },
-        ),
       ),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('lib/assets/icons/alumni.png')),
+        icon: const ImageIcon(AssetImage('lib/assets/icons/alumni.png')),
         title: ("Alumni"),
-        activeColorPrimary:  Colors.red,
+        activeColorPrimary: Colors.red,
         inactiveColorPrimary: CupertinoColors.systemGrey,
         scrollController: _scrollController2,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
-          routes: {
-            "/Profile": (final context) => const Profile(),
-            "/MyCard": (final context) => const MyCard(),
-            "/Benefits": (final context) => const Benefits(),
-            "/Alumni": (final context) => const Alumni(),
-          },
-        ),
       ),
     ];
   }
-
-
 }
