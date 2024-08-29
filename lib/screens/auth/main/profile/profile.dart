@@ -1147,7 +1147,7 @@ class _ProfileState extends State<Profile> {
           child: NestedScrollView(
             headerSliverBuilder: (context, _) {
               return [
-                SliverAppBar(
+                SliverAppBar( //For Banner Image
                   floating: false,
                   pinned: true,
                   expandedHeight: 180,
@@ -1183,7 +1183,7 @@ class _ProfileState extends State<Profile> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    CircleAvatar(
+                                    CircleAvatar( //To make the background image circular
                                       radius: 50, // Adjust the radius as needed
                                       backgroundImage: NetworkImage(
                                           userModel?.profileImageUrl ?? ''),
@@ -1191,7 +1191,7 @@ class _ProfileState extends State<Profile> {
                                           ? Icon(Icons.person, size: 60)
                                           : null,
                                     ),
-                                    if (currentUser.uid == uid)
+                                    if (currentUser.uid == uid) //If the current user is logged in and they are viewing their own profile show Edit Profile button. If current user is viewing other user than show Follow/Unfollow button
                                       ElevatedButton(
                                         onPressed: () {
                                           Navigator.push(
@@ -1202,14 +1202,14 @@ class _ProfileState extends State<Profile> {
                                         },
                                         child: const Text("Edit Profile"),
                                       )
-                                    else if (isFollowing == false)
+                                    else if (isFollowing == false) //if current user has not follow other user then show Follow button
                                       ElevatedButton(
                                         onPressed: () {
                                           _userService.followUser(uid);
                                         },
                                         child: const Text("Follow"),
                                       )
-                                    else if (isFollowing == true)
+                                    else if (isFollowing == true) //if current user has follow the other user then show Unfollow button
                                       ElevatedButton(
                                         onPressed: () {
                                           _userService.unfollowUser(uid);
@@ -1219,7 +1219,7 @@ class _ProfileState extends State<Profile> {
                                   ],
                                 ),
                                 Align(
-                                  alignment: Alignment.centerLeft,
+                                  alignment: Alignment.centerLeft, //To display user name
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 10),
                                     child: Text(
@@ -1236,7 +1236,7 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                       ),
-                      const TabBar(
+                      const TabBar( //Creating tabs for Info,Posts, Interest Groups and Business Listings
                         tabs: [
                           Tab(text: 'Info'),
                           Tab(text: 'Posts'),
@@ -1274,7 +1274,7 @@ class _ProfileState extends State<Profile> {
                     Consumer<UserModel?>(
                       builder: (context, userModel, child) {
                         final currentUser = FirebaseAuth.instance.currentUser;
-                        if (currentUser?.uid == uid) { //if the user is currently logged in and in their profile page show this button else in another user profile then don't show it
+                        if (currentUser?.uid == uid) { //if the user is currently logged in and in their profile page show the Add Post button else in another user profile then don't show it
                           return Positioned(
                             bottom: 16,
                             left: 0,

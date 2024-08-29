@@ -57,7 +57,7 @@ class PostService {
       .snapshots()
       .map(_postListFromSnapshot); 
   }
-
+  //Search posts based on the first character since Firebase does not have full text search feature
    Stream<List<PostModel>> searchPosts(String search) {
     return FirebaseFirestore.instance
         .collection("posts")
