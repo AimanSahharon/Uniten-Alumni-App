@@ -116,7 +116,8 @@ class _AlumniState extends State<Alumni> {
 
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/connectalumni.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/posts_and_interest_groups.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/Posts_and_Interest_Groups/posts_and_interest_groups.dart';
+import 'package:uniten_alumni_app/screens/auth/main/feed.dart';
 
 class Alumni extends StatefulWidget {
   const Alumni({super.key});
@@ -212,7 +213,7 @@ class _AlumniState extends State<Alumni> {
               // Navigate to Posts when this button is tapped
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PostsAndInterestGroups()),
+                MaterialPageRoute(builder: (context) => const PostsAndInterestGroups()),//PostsAndInterestGroups()),
               );
             }
           },

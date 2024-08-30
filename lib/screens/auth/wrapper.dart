@@ -50,6 +50,7 @@ import 'package:provider/provider.dart';
 import 'package:uniten_alumni_app/models/user.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/Posts_and_Interest_Groups/addpost.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/connectalumni.dart';
+import 'package:uniten_alumni_app/screens/auth/main/feed.dart';
 import 'package:uniten_alumni_app/screens/auth/main/navmenu.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile/edit_profile.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile/profile.dart';
@@ -84,6 +85,7 @@ void main() {
         return Profile(uid: user.id); // Pass the user UID here
             },
       '/editprofile': (context) => const EditProfile(),
+      '/feed': (context) => const Feed(),
     },
   ));
 } 

@@ -1,8 +1,12 @@
 //TOREAD: This file is to allow user to post content to the firebase server
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uniten_alumni_app/models/post.dart';
+import 'package:uniten_alumni_app/services/user.dart';
+import 'package:quiver/iterables.dart';
 
 class PostService {
   // Convert Firestore snapshot to a list of PostModel objects
@@ -68,6 +72,37 @@ class PostService {
         .snapshots()
         .map(_userListFromQuerySnapshot);
   }
+
+  Future<List<PostModel>> getFeed(String uid) async {
+    List<String> usersFollowing = await UserService() 
+    .getUserFollowing(FirebaseAuth.instance.currentUser?.uid);
+
+    var splitUsersFollowing = partition<dynamic>(usersFollowing, 10);
+    inspect(splitUsersFollowing);
+
+
+List<PostModel> feedList = [];
+    for(int i = 0; i < splitUsersFollowing.length; i++) {
+       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+    .collection('posts')
+    .where('creator', whereIn: splitUsersFollowing.elementAt(i))
+    .orderBy('timestamp', descending: true)
+    .get();
+
+    feedList.addAll(_postListFromSnapshot(querySnapshot));
+
+    }
+
+    feedList.sort((a, b) {
+      var adate = a.timestamp;
+      var bdate = b.timestamp;
+      return bdate.compareTo(adate);
+
+    });
+
+    return feedList;
+
+  } 
 
 }
 

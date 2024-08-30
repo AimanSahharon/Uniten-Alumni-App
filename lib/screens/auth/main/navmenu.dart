@@ -1039,7 +1039,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/posts_and_interest_groups.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/Posts_and_Interest_Groups/posts_and_interest_groups.dart';
 import 'package:uniten_alumni_app/screens/auth/main/alumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/benefits.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/connectalumni.dart';
