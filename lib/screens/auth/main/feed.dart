@@ -1,3 +1,5 @@
+//TOREAD: This is to only display the post that the current logged in user is following and not all the user's posts
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +26,7 @@ class _FeedState extends State<Feed> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [const Color.fromARGB(255, 255, 0, 0), const Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors
+              colors: [const Color.fromARGB(255, 255, 0, 0), const Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors for background colors
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

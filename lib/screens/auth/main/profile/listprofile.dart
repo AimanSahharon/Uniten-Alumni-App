@@ -46,7 +46,7 @@ class _ListUsersState extends State<ListUsers> {
       });
   }
 } */
-
+//TOREAD: This file is to display all users to the curretly logged in user
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uniten_alumni_app/models/user.dart';
@@ -85,7 +85,7 @@ class _ListUsersState extends State<ListUsers> {
                 padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
-                    user.profileImageUrl.isNotEmpty
+                    user.profileImageUrl.isNotEmpty //if user's image is not empty then display their profile pic along with their name
                       ? CircleAvatar(
                           radius: 20,
                           backgroundImage: NetworkImage(user.profileImageUrl),

@@ -43,6 +43,31 @@ class PostService {
     });
   }
 
+   Future<void> likePost(PostModel post, bool currentUser) async { 
+    final postRef = FirebaseFirestore.instance.collection("posts").doc(post.id);
+
+  if (currentUser) { // when user taps like on an already liked state
+    await postRef.collection("likes").doc(FirebaseAuth.instance.currentUser?.uid).delete();
+    await postRef.update({'likeCount': FieldValue.increment(-1)});
+  } else { // when user has not liked post
+    await postRef.collection("likes").doc(FirebaseAuth.instance.currentUser?.uid).set({});
+    await postRef.update({'likeCount': FieldValue.increment(1)});
+  }
+  }
+
+   Stream<bool> getCurrentUserLike(PostModel post) {
+  return FirebaseFirestore.instance
+      .collection("posts")
+      .doc(post.id)
+      .collection("likes")
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .snapshots()
+      .map((snapshot) {
+        return snapshot.exists;
+      });
+}
+
+
   // Stream of posts by a specific user
   Stream<List<PostModel>> getPostsByUser(String uid) { // Added type annotation for uid
     return FirebaseFirestore.instance

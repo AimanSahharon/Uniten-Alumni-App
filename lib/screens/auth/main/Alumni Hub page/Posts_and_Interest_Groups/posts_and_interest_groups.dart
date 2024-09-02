@@ -1195,7 +1195,7 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
   }
 } */
 
-
+//TOREAD: This is file is to display Posts and Interest Groups page
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
