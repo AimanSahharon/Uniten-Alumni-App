@@ -6,9 +6,10 @@ class PostModel {
   final String text;
   final Timestamp timestamp;
   final int likeCount;
+  final int commentCount;
 
 
-  PostModel({required this.id, required this.creator, required this.text, required this.timestamp, this.likeCount = 0,});
+  PostModel({required this.id, required this.creator, required this.text, required this.timestamp, this.likeCount = 0, this.commentCount = 0,});
 
 
   // Add a method to convert from Firestore document
@@ -20,6 +21,7 @@ class PostModel {
       creator: data['creator'] ?? '',
       timestamp: data['timestamp'] ?? Timestamp.now(),
       likeCount: data['likeCount'] ?? 0,
+      commentCount: data['commentCount'] ?? 0,
     );
   }
   

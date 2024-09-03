@@ -126,8 +126,105 @@ List<PostModel> feedList = [];
     });
 
     return feedList;
+    }
 
-  } 
+    // Method to edit a post
+Future<void> editPost(String postId, String newText) async {
+  final postRef = FirebaseFirestore.instance.collection("posts").doc(postId);
+  final doc = await postRef.get();
 
+  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
+    await postRef.update({
+      'text': newText,
+      'timestamp': FieldValue.serverTimestamp(), // Optionally update the timestamp
+    });
+  } else {
+    throw Exception('You are not authorized to edit this post.');
+  }
+    }
+
+// Method to delete a post
+Future<void> deletePost(String postId) async {
+  final postRef = FirebaseFirestore.instance.collection("posts").doc(postId);
+  final doc = await postRef.get();
+
+  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
+    await postRef.delete();
+  } else {
+    throw Exception('You are not authorized to delete this post.');
+  }
+    }
+
+  Future<void> addComment(String postId, String text) async {
+  final commentRef = FirebaseFirestore.instance.collection('posts').doc(postId).collection('comments').doc();
+  await commentRef.set({
+    'text': text,
+    'creator': FirebaseAuth.instance.currentUser!.uid,
+    'timestamp': FieldValue.serverTimestamp(),
+  });
+
+  // Increment the commentCount in the post document
+  final postRef = FirebaseFirestore.instance.collection('posts').doc(postId);
+  await postRef.update({'commentCount': FieldValue.increment(1)});
 }
+
+  // Edit a comment
+  Future<void> editComment(String postId, String commentId, String newText) async {
+  final commentRef = FirebaseFirestore.instance.collection('posts').doc(postId).collection('comments').doc(commentId);
+  final doc = await commentRef.get();
+
+  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
+    await commentRef.update({
+      'text': newText,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  } else {
+    throw Exception('You are not authorized to edit this comment.');
+  }
+}
+
+  // Delete a comment
+Future<void> deleteComment(String postId, String commentId) async {
+  final commentRef = FirebaseFirestore.instance.collection('posts').doc(postId).collection('comments').doc(commentId);
+  final doc = await commentRef.get();
+
+  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
+    await commentRef.delete();
+
+    // Decrement the commentCount in the post document
+    final postRef = FirebaseFirestore.instance.collection('posts').doc(postId);
+    await postRef.update({'commentCount': FieldValue.increment(-1)});
+  } else {
+    throw Exception('You are not authorized to delete this comment.');
+  }
+}
+
+
+  // Stream of comments for a post
+  Stream<List<PostModel>> getComments(String postId) {
+    return FirebaseFirestore.instance
+      .collection('posts')
+      .doc(postId)
+      .collection('comments')
+      .orderBy('timestamp', descending: true)
+      .snapshots()
+      .map((snapshot) => snapshot.docs.map((doc) => PostModel.fromFirestore(doc)).toList());
+  }
+
+   // Stream of posts liked by the current user
+  Stream<List<PostModel>> getLikedPosts() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      return Stream.value([]);
+    }
+
+    return FirebaseFirestore.instance
+        .collection('posts')
+        .where('likes.${currentUser.uid}', isEqualTo: true)
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map(_postListFromSnapshot);
+  }
+}
+
 

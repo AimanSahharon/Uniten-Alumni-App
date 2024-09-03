@@ -117,8 +117,8 @@ class _AlumniState extends State<Alumni> {
 
 //TOREAD: This is Alumni page or Alumni hub which is a menu for user to go to other pages
 import 'package:flutter/material.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/connectalumni.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni%20Hub%20page/Posts_and_Interest_Groups/posts_and_interest_groups.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/connectalumni.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/posts_and_interest_groups.dart';
 import 'package:uniten_alumni_app/screens/auth/main/feed.dart';
 
 class Alumni extends StatefulWidget {
