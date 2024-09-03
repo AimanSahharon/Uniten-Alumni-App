@@ -212,19 +212,40 @@ Future<void> deleteComment(String postId, String commentId) async {
   }
 
    // Stream of posts liked by the current user
-  Stream<List<PostModel>> getLikedPosts() {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) {
-      return Stream.value([]);
-    }
+  Future<List<PostModel>> getLikedPosts(String uid) async {
+  // Get all posts
+  QuerySnapshot postsSnapshot = await FirebaseFirestore.instance
+      .collection('posts')
+      .orderBy('timestamp', descending: true)
+      .get();
 
-    return FirebaseFirestore.instance
+  List<PostModel> likedPosts = [];
+  
+  for (var doc in postsSnapshot.docs) {
+    var postId = doc.id;
+    var likesSnapshot = await FirebaseFirestore.instance
         .collection('posts')
-        .where('likes.${currentUser.uid}', isEqualTo: true)
-        .orderBy('timestamp', descending: true)
-        .snapshots()
-        .map(_postListFromSnapshot);
+        .doc(postId)
+        .collection('likes')
+        .doc(uid)
+        .get();
+
+    // Check if the user has liked this post
+    if (likesSnapshot.exists) {
+      likedPosts.add(PostModel(
+        id: doc.id,
+        text: doc['text'] ?? '',
+        creator: doc['creator'] ?? '',
+        timestamp: doc['timestamp'] ?? 0,
+      ));
+    }
   }
+
+  return likedPosts;
+}
+
+
+
 }
 
 

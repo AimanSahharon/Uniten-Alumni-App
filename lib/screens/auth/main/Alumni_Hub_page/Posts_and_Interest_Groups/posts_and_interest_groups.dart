@@ -1195,6 +1195,7 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
   }
 } */
 
+/*
 //TOREAD: This is file is to display Posts and Interest Groups page
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -1415,6 +1416,315 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
               ),
               
 
+
+              // Interest Groups Tab Content
+              Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 255, 0, 0), // Red
+                          Color.fromARGB(255, 128, 0, 255), // Purple
+                        ],
+                      ),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Interest Groups Content',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromARGB(255, 255, 0, 0), // Red
+                              Color.fromARGB(255, 128, 0, 255), // Purple
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => const AddPosts()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent, // Set the button's background to transparent
+                            elevation: 5, // Add elevation for shadow
+                            shadowColor: Colors.black.withOpacity(0.5), // Set the shadow color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          ),
+                          child: const Text(
+                            'Add Interest Group Post',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+} */
+
+
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:uniten_alumni_app/models/post.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/addpost.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/listposts.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/feed.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/likedposts.dart'; // Import LikedPostsScreen
+import 'package:uniten_alumni_app/services/posts.dart';
+
+class PostsAndInterestGroups extends StatefulWidget {
+  const PostsAndInterestGroups({super.key});
+
+  @override
+  State<PostsAndInterestGroups> createState() => _PostsAndInterestGroupsState();
+}
+
+class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
+  final PostService _postsService = PostService();
+  final TextEditingController _searchController = TextEditingController();
+  Stream<List<PostModel>>? _postsStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _postsStream = _postsService.getAllPosts(FirebaseAuth.instance.currentUser!.uid);
+  }
+
+  void _searchPosts(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _postsStream = _postsService.getAllPosts(FirebaseAuth.instance.currentUser!.uid);
+      });
+    } else {
+      setState(() {
+        _postsStream = _postsService.searchPosts(query);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<List<PostModel>?>.value(
+      value: _postsStream,
+      initialData: [],
+      child: DefaultTabController(
+        length: 4, // Adjusted to match the number of tabs
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: 'Posts'),
+                Tab(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Followed'),
+                      Text('User Posts'),
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Liked'),
+                      Text('Posts'),
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Interest'),
+                      Text('Groups'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            title: const Text('Posts and Interest Groups'),
+          ),
+          body: TabBarView(
+            children: [
+              // Post Tab Content
+              Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 255, 0, 0), // Red
+                          Color.fromARGB(255, 128, 0, 255), // Purple
+                        ],
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        // Search Bar
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              hintText: 'Search posts...',
+                              prefixIcon: const Icon(Icons.search),
+                              fillColor: Colors.white, // Set the fill color to white
+                              filled: true, // Enable the fill color
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            onChanged: _searchPosts,
+                          ),
+                        ),
+                        const Expanded(
+                          child: ListPosts(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromARGB(255, 255, 0, 0), // Red
+                              Color.fromARGB(255, 128, 0, 255), // Purple
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => const AddPosts()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent, // Set the button's background to transparent
+                            elevation: 10, // Add elevation for shadow
+                            shadowColor: Colors.black.withOpacity(0.5), // Set the shadow color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          ),
+                          child: const Text(
+                            'Add Post',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // User Posts under Followed Tab Content
+              Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 255, 0, 0), // Red
+                          Color.fromARGB(255, 128, 0, 255), // Purple
+                        ],
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        const Expanded(
+                          child: Feed(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromARGB(255, 255, 0, 0), // Red
+                              Color.fromARGB(255, 128, 0, 255), // Purple
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => const AddPosts()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent, // Set the button's background to transparent
+                            elevation: 10, // Add elevation for shadow
+                            shadowColor: Colors.black.withOpacity(0.5), // Set the shadow color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          ),
+                          child: const Text(
+                            'Add Post',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // Liked Posts Tab Content
+              LikedPostsScreen(), // Navigate to LikedPostsScreen
 
               // Interest Groups Tab Content
               Stack(

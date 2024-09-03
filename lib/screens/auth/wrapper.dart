@@ -50,7 +50,7 @@ import 'package:provider/provider.dart';
 import 'package:uniten_alumni_app/models/user.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/addpost.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/connectalumni.dart';
-import 'package:uniten_alumni_app/screens/auth/main/feed.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/feed.dart';
 import 'package:uniten_alumni_app/screens/auth/main/navmenu.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile/edit_profile.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile/profile.dart';
