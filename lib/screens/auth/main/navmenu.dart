@@ -1130,7 +1130,7 @@ class _NavMenuState extends State<NavMenu> {
           ],
         ),
         drawer: _buildDrawer(context), 
-        body: const MyCard(),
+        body: MyCard(),
       ),
       Scaffold(
         appBar: AppBar(

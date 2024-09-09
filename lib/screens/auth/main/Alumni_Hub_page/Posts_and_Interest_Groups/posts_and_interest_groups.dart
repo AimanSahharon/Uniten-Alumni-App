@@ -1724,7 +1724,51 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
               ),
 
               // Liked Posts Tab Content
-              LikedPostsScreen(), // Navigate to LikedPostsScreen
+              Stack(
+                children: [
+                  LikedPostsScreen(), // Navigate to LikedPostsScreen
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromARGB(255, 255, 0, 0), // Red
+                              Color.fromARGB(255, 128, 0, 255), // Purple
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => const AddPosts()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent, // Set the button's background to transparent
+                            elevation: 10, // Add elevation for shadow
+                            shadowColor: Colors.black.withOpacity(0.5), // Set the shadow color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          ),
+                          child: const Text(
+                            'Add Post',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
 
               // Interest Groups Tab Content
               Stack(
