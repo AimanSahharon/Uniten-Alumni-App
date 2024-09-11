@@ -160,7 +160,7 @@ import 'dart:io';
 class EditPostScreen extends StatefulWidget {
   final PostModel post;
 
-  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+  const EditPostScreen({super.key, required this.post});
 
   @override
   _EditPostScreenState createState() => _EditPostScreenState();
@@ -178,8 +178,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -217,13 +217,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             _imageFile != null
                 ? Image.file(_imageFile!)
                 : widget.post.imageUrl != null
                     ? Image.network(widget.post.imageUrl!)
                     : Container(),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _pickImage,
               child: const Text('Pick Image'),

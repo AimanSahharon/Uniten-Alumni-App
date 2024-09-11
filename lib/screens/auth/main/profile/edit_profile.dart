@@ -340,7 +340,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  UserService _userService = UserService();
+  final UserService _userService = UserService();
   
   File? _profileImage;
   File? _bannerImage;
@@ -351,19 +351,19 @@ class _EditProfileState extends State<EditProfile> {
     final pickedFile = await showDialog<XFile>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Select Image Source'),
+        title: const Text('Select Image Source'),
         actions: [
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop(await picker.pickImage(source: ImageSource.camera));
             },
-            child: Text('Take Photo'),
+            child: const Text('Take Photo'),
           ),
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop(await picker.pickImage(source: ImageSource.gallery));
             },
-            child: Text('Choose from Gallery'),
+            child: const Text('Choose from Gallery'),
           ),
         ],
       ),
@@ -384,10 +384,10 @@ class _EditProfileState extends State<EditProfile> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text("Edit Profile"),
+      title: const Text("Edit Profile"),
     ),
     body: Container(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
       child: Form(
         child: Column(
           children: [
@@ -396,45 +396,45 @@ Widget build(BuildContext context) {
               child: Row(
                 children: [
                   _profileImage == null
-                      ? Icon(Icons.person, size: 100)
+                      ? const Icon(Icons.person, size: 100)
                       : Image.file(_profileImage!, height: 100, width: 100, fit: BoxFit.cover),
-                  SizedBox(width: 10), // Add space between the icon and text
-                  Text("Edit Profile Picture"),
+                  const SizedBox(width: 10), // Add space between the icon and text
+                  const Text("Edit Profile Picture"),
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             GestureDetector(
               onTap: () => getImage(1),
               child: Row(
                 children: [
                   _bannerImage == null
-                      ? Icon(Icons.photo, size: 100)
+                      ? const Icon(Icons.photo, size: 100)
                       : Image.file(_bannerImage!, height: 100, width: 100, fit: BoxFit.cover),
-                  SizedBox(width: 10), // Add space between the icon and text
-                  Text("Edit Banner Image"),
+                  const SizedBox(width: 10), // Add space between the icon and text
+                  const Text("Edit Banner Image"),
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               onChanged: (val) {
                 setState(() {
                   name = val;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Name",
               ),
             ),
-            SizedBox(height: 20), // Add some space between the TextFormField and the button
+            const SizedBox(height: 20), // Add some space between the TextFormField and the button
             ElevatedButton(
               onPressed: () async {
                 // Allow updating either profile image, banner image, or both.
                 if (_profileImage == null && _bannerImage == null && name.isEmpty) {
                   // Handle error: prompt user to select at least one field to update
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please update at least one field (name, profile image, or banner image)')),
+                    const SnackBar(content: Text('Please update at least one field (name, profile image, or banner image)')),
                   );
                 } else {
                   // Update the profile with whichever fields are provided

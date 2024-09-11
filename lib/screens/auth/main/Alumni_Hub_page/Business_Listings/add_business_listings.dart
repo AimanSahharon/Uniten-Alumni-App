@@ -31,19 +31,19 @@ class _AddBusinessListingsState extends State<AddBusinessListings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Post'),
+        title: const Text('Add Post'),
         actions: [
           ElevatedButton(
             onPressed: () async {
               await _businessListingService.savePost(text, _image); // Pass the image along with the text
               Navigator.pop(context);
             },
-            child: Text('Post'),
+            child: const Text('Post'),
           ),
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Form(
           child: Column(
             children: [
@@ -53,16 +53,16 @@ class _AddBusinessListingsState extends State<AddBusinessListings> {
                     text = val;
                   });
                 },
-                decoration: InputDecoration(hintText: 'Enter your post'),
+                decoration: const InputDecoration(hintText: 'Enter your post'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _image != null
                   ? Image.file(_image!, height: 200) // Display selected image
-                  : SizedBox.shrink(),
-              SizedBox(height: 20),
+                  : const SizedBox.shrink(),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _pickImage,
-                child: Text('Pick an image'),
+                child: const Text('Pick an image'),
               ),
             ],
           ),

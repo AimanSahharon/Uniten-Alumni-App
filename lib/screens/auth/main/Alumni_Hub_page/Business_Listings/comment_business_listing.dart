@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 class CommentScreen extends StatefulWidget {
   final BusinessListingsModel post;
 
-  const CommentScreen({Key? key, required this.post}) : super(key: key);
+  const CommentScreen({super.key, required this.post});
 
   @override
   _CommentScreenState createState() => _CommentScreenState();
@@ -67,7 +67,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
           Expanded(
             child: StreamProvider<List<BusinessListingsModel>>.value(
               value: _businessListingsService.getComments(widget.post.id),
-              initialData: [],
+              initialData: const [],
               builder: (context, child) {
                 final comments = Provider.of<List<BusinessListingsModel>>(context);
                 return ListView.builder(
@@ -85,11 +85,11 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                         }
 
                         final user = snapshot.data;
-                        final dateTime = (comment.timestamp as Timestamp).toDate();
+                        final dateTime = (comment.timestamp).toDate();
                         final formattedTime = DateFormat.yMMMd().add_jm().format(dateTime);
 
                         return Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.black,
@@ -109,10 +109,10 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(comment.text),
-                                SizedBox(height: 4.0),
+                                const SizedBox(height: 4.0),
                                 Text(
                                   formattedTime,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 12.0,
                                   ),
@@ -129,13 +129,13 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                                           showDialog(
                                             context: context,
                                             builder: (context) {
-                                              TextEditingController _editController =
+                                              TextEditingController editController =
                                                   TextEditingController(text: comment.text);
 
                                               return AlertDialog(
                                                 title: const Text('Edit Comment'),
                                                 content: TextField(
-                                                  controller: _editController,
+                                                  controller: editController,
                                                   decoration: const InputDecoration(
                                                     hintText: 'Edit your comment...',
                                                   ),
@@ -143,7 +143,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () async {
-                                                      await _businessListingsService.editComment(widget.post.id, comment.id, _editController.text);
+                                                      await _businessListingsService.editComment(widget.post.id, comment.id, editController.text);
                                                       Navigator.of(context).pop();
                                                     },
                                                     child: const Text('Save'),

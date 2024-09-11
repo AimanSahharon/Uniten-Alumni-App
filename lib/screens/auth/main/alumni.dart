@@ -208,7 +208,7 @@ class _AlumniState extends State<Alumni> {
               // Navigate to MyCard when this button is tapped
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ConnectAlumni()),
+                MaterialPageRoute(builder: (context) => const ConnectAlumni()),
               );
             }
 

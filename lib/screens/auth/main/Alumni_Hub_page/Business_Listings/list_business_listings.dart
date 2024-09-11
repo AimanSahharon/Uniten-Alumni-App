@@ -393,11 +393,11 @@ class BusinessListings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserService _userService = UserService();
-    BusinessListingsService _businessListingsService = BusinessListingsService();
+    UserService userService = UserService();
+    BusinessListingsService businessListingsService = BusinessListingsService();
     final posts = Provider.of<List<BusinessListingsModel>>(context);
 
-    if (posts == null || posts.isEmpty) {
+    if (posts.isEmpty) {
       return const Center(
         child: Text('No posts available.', style: TextStyle(fontSize: 18)),
       );
@@ -407,7 +407,7 @@ class BusinessListings extends StatelessWidget {
       itemCount: posts.length + 1, // Add an extra item for the padding
       itemBuilder: (context, index) {
         if (index == posts.length) {
-          return SizedBox(height: 80.0); // Add extra space after the last post
+          return const SizedBox(height: 80.0); // Add extra space after the last post
         }
 
         final post = posts[index];
@@ -421,7 +421,7 @@ class BusinessListings extends StatelessWidget {
 
             final post = BusinessListingsModel.fromFirestore(snapshotPost.data!);
             return StreamBuilder<UserModel?>(
-              stream: _userService.getUserInfo(post.creator),
+              stream: userService.getUserInfo(post.creator),
               builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshotUser) {
                 if (!snapshotUser.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -429,7 +429,7 @@ class BusinessListings extends StatelessWidget {
 
                 final user = snapshotUser.data;
                 return StreamBuilder<bool>(
-                  stream: _businessListingsService.getCurrentUserLike(post),
+                  stream: businessListingsService.getCurrentUserLike(post),
                   builder: (BuildContext context, AsyncSnapshot<bool> snapshotLike) {
                     if (!snapshotLike.hasData) {
                       return const Center(child: CircularProgressIndicator());
@@ -529,7 +529,7 @@ class BusinessListings extends StatelessWidget {
                                                 color: Colors.red,
                                               ),
                                         onPressed: () {
-                                          _businessListingsService.likePost(post, snapshotLike.data!);
+                                          businessListingsService.likePost(post, snapshotLike.data!);
                                         },
                                       ),
                                       Text('${post.likeCount}', style: const TextStyle(fontSize: 16)),
@@ -560,7 +560,7 @@ class BusinessListings extends StatelessWidget {
                                         IconButton(
                                           icon: const Icon(Icons.delete),
                                           onPressed: () async {
-                                            await _businessListingsService.deletePost(post.id);
+                                            await businessListingsService.deletePost(post.id);
                                           },
                                         ),
                                       ],

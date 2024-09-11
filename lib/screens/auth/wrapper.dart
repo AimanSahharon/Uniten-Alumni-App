@@ -66,7 +66,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return const SignUp(); // Show SignUp screen if user is not authenticated
     } else {
-      return NavMenu(); // Show NavMenu if user is authenticated
+      return const NavMenu(); // Show NavMenu if user is authenticated
     }
   }
 }
@@ -77,8 +77,8 @@ void main() {
     initialRoute: '/',
     routes: {
       '/': (context) => const Wrapper(), // Use Wrapper as the root widget
-      '/addpost': (context) => AddPosts(),
-      '/connectalumni': (context) =>  ConnectAlumni(),
+      '/addpost': (context) => const AddPosts(),
+      '/connectalumni': (context) =>  const ConnectAlumni(),
       // You should handle `uid` in profile route properly
       '/profile': (context) {
         final user = Provider.of<UserModel>(context, listen: false);

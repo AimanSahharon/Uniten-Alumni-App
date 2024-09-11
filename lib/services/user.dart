@@ -11,10 +11,10 @@ class UserService {
     return snapshot.docs.map((doc) {
       return UserModel(
         id: doc.id,
-        bannerImageUrl: doc.data()?['bannerImageUrl'] ?? '',
-        profileImageUrl: doc.data()?['profileImageUrl'] ?? '',
-        name: doc.data()?['name'] ?? '',
-        email: doc.data()?['email'] ?? '',
+        bannerImageUrl: doc.data()['bannerImageUrl'] ?? '',
+        profileImageUrl: doc.data()['profileImageUrl'] ?? '',
+        name: doc.data()['name'] ?? '',
+        email: doc.data()['email'] ?? '',
       );
     }).toList();
   }
@@ -60,7 +60,7 @@ class UserService {
         .collection("users")
         .orderBy("name") 
         .startAt([search]) // If user search and type the first letter, start finding user starting those letters
-        .endAt([search + '\uf8ff'])
+        .endAt(['$search\uf8ff'])
         .limit(10) // Show 10 search results
         .snapshots()
         .map(_userListFromQuerySnapshot);

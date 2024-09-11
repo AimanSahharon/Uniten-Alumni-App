@@ -345,18 +345,18 @@ class ConnectAlumni extends StatefulWidget {
 }
 
 class _ConnectAlumniState extends State<ConnectAlumni> {
-  UserService _userService = UserService();
+  final UserService _userService = UserService();
   String search = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Connect Alumni'),
+        title: const Text('Connect Alumni'),
       ),
       body: StreamProvider<List<UserModel>>.value(
         value: _userService.queryByName(search),
-        initialData: [],
+        initialData: const [],
         child: Column(
           children: [
             Padding(
@@ -367,13 +367,13 @@ class _ConnectAlumniState extends State<ConnectAlumni> {
                     search = text;
                   });
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Search...',
                   border: OutlineInputBorder(),
                 ),
               ),
             ),
-            Expanded(child: ListUsers()), // display the user using listprofile.dart in Profile folder
+            const Expanded(child: ListUsers()), // display the user using listprofile.dart in Profile folder
           ],
         ),
       ),

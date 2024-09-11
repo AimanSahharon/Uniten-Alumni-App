@@ -20,7 +20,7 @@ class _SignUpState extends State<SignUp> {
     return Scaffold( //Scaffold already contains some basic features such as app bar
       appBar: AppBar(backgroundColor: const Color.fromARGB(255, 255, 255, 255), //the top bar for appearance
       elevation: 8, //brings the appbar "forward" to have shadows at the bottom
-      title: Text("Sign Up", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)) //add title to the appbar
+      title: const Text("Sign Up", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)) //add title to the appbar
 
       ),
       
@@ -33,7 +33,7 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50), //to prevent elements reaching/stuck on the edges of the screen
-        child: new Form( //create new form for user to input data
+        child: Form( //create new form for user to input data
           child: Column( //to arrange the elements by stacking
             children: [
               TextField( //create text box for usernamne or email
@@ -46,7 +46,7 @@ class _SignUpState extends State<SignUp> {
                       border: OutlineInputBorder(), //creates the outline box of the textbox
                         hintText: "Enter Username")),
 
-                    SizedBox(height: 20), //add space between the textbox
+                    const SizedBox(height: 20), //add space between the textbox
                     
                     TextField( //create text box for password
               onChanged: (val) => setState((){
@@ -59,14 +59,14 @@ class _SignUpState extends State<SignUp> {
                         hintText: "Enter Password"),
                     ),
                     
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton( //creates button
-                      child: Text('Sign Up'),
+                      child: const Text('Sign Up'),
                       onPressed: () async => {_authService.signUp(email, password)}), //when pressed access the AuthService function called SignIn
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton( //creates button
-                      child: Text('Sign In'),
+                      child: const Text('Sign In'),
                       onPressed: () async => {_authService.signIn(email, password)}) //when pressed access the AuthService function called SignIn 
 
                     ] //placement text] //placement text

@@ -54,18 +54,18 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  BusinessListingsService _BusinessListingsService = BusinessListingsService();
+  final BusinessListingsService _BusinessListingsService = BusinessListingsService();
 
   @override
   Widget build(BuildContext context) {
     return FutureProvider<List<BusinessListingsModel>>.value(
       value: _BusinessListingsService.getFeed(FirebaseAuth.instance.currentUser!.uid),
-      initialData: <BusinessListingsModel>[],
+      initialData: const <BusinessListingsModel>[],
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [const Color.fromARGB(255, 255, 0, 0), const Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors for background colors
+              colors: [Color.fromARGB(255, 255, 0, 0), Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors for background colors
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

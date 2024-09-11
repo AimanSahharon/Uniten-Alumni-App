@@ -12,7 +12,12 @@
           "package_name": "com.example.uniten_alumni_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "656448382491-4pqtak5omk7s7kicj94liqk64oskqcbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB0t2zLP_vfVatKvxU-w9Mr7bEZko8HjNU"
@@ -20,7 +25,41 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656448382491-4pqtak5omk7s7kicj94liqk64oskqcbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656448382491:android:30a8f29a5f835e8602babe",
+        "android_client_info": {
+          "package_name": "com.uniten_alumni.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656448382491-4pqtak5omk7s7kicj94liqk64oskqcbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0t2zLP_vfVatKvxU-w9Mr7bEZko8HjNU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656448382491-4pqtak5omk7s7kicj94liqk64oskqcbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
