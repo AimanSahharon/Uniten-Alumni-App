@@ -327,7 +327,6 @@ class _EditProfileState extends State<EditProfile> {
 
 //TOREAD: This file is to allow user to edit their profile by uploading their profile images and banner similar to twitter
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uniten_alumni_app/services/user.dart';

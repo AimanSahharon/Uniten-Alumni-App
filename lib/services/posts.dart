@@ -2,10 +2,12 @@
 
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:uniten_alumni_app/models/post.dart';
 import 'package:uniten_alumni_app/services/user.dart';
 import 'package:quiver/iterables.dart';
@@ -36,8 +38,8 @@ class PostService {
     }).toList();
   }
 
-  // Save a post to Firestore
- Future<void> savePost(String text, File? imageFile) async {
+  // Save a post to Firestore ORIGINAL, cannot save from the web
+ /*Future<void> savePost(String text, File? imageFile) async {
     String? imageUrl;
 
     // Upload image to Firebase Storage if there's an image selected
@@ -60,7 +62,31 @@ class PostService {
     .snapshots()
     .map((snapshot) => snapshot.docs.map((doc) => PostModel.fromFirestore(doc)).toList());
 }
+  } */
+ Future<void> savePost(String text, File? imageFile, Uint8List? webImage) async {
+  String? imageUrl;
+
+  // Upload image to Firebase Storage if there's an image selected
+  if (imageFile != null) {
+    final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+    final uploadTask = await storageRef.putFile(imageFile);
+    imageUrl = await uploadTask.ref.getDownloadURL(); // Get the image URL
+  } else if (webImage != null) {
+    final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+    final uploadTask = await storageRef.putData(webImage);
+    imageUrl = await uploadTask.ref.getDownloadURL(); // Get the image URL
   }
+
+  // Save the post along with the image URL in Firestore
+  await FirebaseFirestore.instance.collection("posts").add({
+    'text': text,
+    'imageUrl': imageUrl, // Save the image URL if there is an image
+    'creator': FirebaseAuth.instance.currentUser!.uid,
+    'timestamp': FieldValue.serverTimestamp(),
+  });
+}
+
+
 
    Future<void> likePost(PostModel post, bool currentUser) async { 
     final postRef = FirebaseFirestore.instance.collection("posts").doc(post.id);
@@ -148,20 +174,7 @@ List<PostModel> feedList = [];
     }
 
     // Method to edit a post
-/*Future<void> editPost(String postId, String newText) async {
-  final postRef = FirebaseFirestore.instance.collection("posts").doc(postId);
-  final doc = await postRef.get();
-
-  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
-    await postRef.update({
-      'text': newText,
-      'timestamp': FieldValue.serverTimestamp(), // Optionally update the timestamp
-    });
-  } else {
-    throw Exception('You are not authorized to edit this post.');
-  }
-    } */
-
+/*
    Future<void> editPost(String postId, String newText, File? newImageFile) async {
   final postRef = FirebaseFirestore.instance.collection("posts").doc(postId);
   final doc = await postRef.get();
@@ -185,7 +198,45 @@ List<PostModel> feedList = [];
   } else {
     throw Exception('You are not authorized to edit this post.');
   }
+} */
+
+Future<void> editPost(
+  String postId,
+  String newText,
+  File? newImageFile,
+  Uint8List? newWebImage // Add this parameter for web image data
+) async {
+  final postRef = FirebaseFirestore.instance.collection("posts").doc(postId);
+  final doc = await postRef.get();
+  String? newImageUrl;
+
+  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
+    // If a new image is provided (mobile or web), upload it and get the new URL
+    if (newImageFile != null) {
+      // Mobile
+      final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      final uploadTask = await storageRef.putFile(newImageFile);
+      newImageUrl = await uploadTask.ref.getDownloadURL();
+    } else if (newWebImage != null) {
+      // Web
+      final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      final uploadTask = storageRef.putData(newWebImage);
+      newImageUrl = await (await uploadTask).ref.getDownloadURL();
+    } else {
+      // No new image
+      newImageUrl = doc.data()?['imageUrl'];
+    }
+
+    await postRef.update({
+      'text': newText,
+      'imageUrl': newImageUrl,
+      'timestamp': FieldValue.serverTimestamp(), // Optionally update the timestamp
+    });
+  } else {
+    throw Exception('You are not authorized to edit this post.');
+  }
 }
+
 
 
 // Method to delete a post

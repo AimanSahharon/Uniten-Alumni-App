@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/services/businesslistings.dart';
-import 'package:uniten_alumni_app/services/posts.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uniten_alumni_app/models/post.dart';
 import 'package:uniten_alumni_app/models/user.dart';
 import 'package:uniten_alumni_app/services/user.dart';
 import 'package:intl/intl.dart';

@@ -1047,7 +1047,6 @@ import 'package:uniten_alumni_app/screens/auth/main/benefits.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/connectalumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/homepage.dart';
 import 'package:uniten_alumni_app/screens/auth/main/mycard.dart';
-import 'package:uniten_alumni_app/screens/auth/main/profile/edit_profile.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile/profile.dart';
 import 'package:uniten_alumni_app/services/auth.dart';
 

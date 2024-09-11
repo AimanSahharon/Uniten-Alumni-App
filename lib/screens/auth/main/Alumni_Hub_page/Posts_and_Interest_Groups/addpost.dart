@@ -122,12 +122,14 @@ class _AddPostsState extends State<AddPosts> {
 
 
 //WITH WEB SUPPORT
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart'; // Import file_picker
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart'; // Add this import for image picker
+import 'dart:io'; // For File
 import 'package:uniten_alumni_app/services/posts.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'dart:html' as html; // Import for web file picker
+// Import for Uint8List
 
 class AddPosts extends StatefulWidget {
   const AddPosts({super.key});
@@ -139,21 +141,29 @@ class AddPosts extends StatefulWidget {
 class _AddPostsState extends State<AddPosts> {
   final PostService _postService = PostService();
   String text = '';
-  File? _image; // To hold the image file
+  File? _image; // For mobile
+  Uint8List? _webImage; // For web
 
   // Function to pick an image
   Future<void> _pickImage() async {
     if (kIsWeb) {
-      // For web
-      final result = await FilePicker.platform.pickFiles(type: FileType.image);
-      if (result != null && result.files.isNotEmpty) {
-        setState(() {
-          // Use the web file directly
-          _image = File(result.files.single.path!); // Store the picked image
+      // Web
+      final fileInput = html.FileUploadInputElement();
+      fileInput.accept = 'image/*';
+      fileInput.onChange.listen((e) async {
+        final reader = html.FileReader();
+        reader.readAsArrayBuffer(fileInput.files![0]);
+
+        reader.onLoadEnd.listen((e) {
+          setState(() {
+            _webImage = reader.result as Uint8List;
+          });
         });
-      }
+      });
+
+      fileInput.click();
     } else {
-      // For mobile
+      // Mobile
       final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
         setState(() {
@@ -171,7 +181,7 @@ class _AddPostsState extends State<AddPosts> {
         actions: [
           ElevatedButton(
             onPressed: () async {
-              await _postService.savePost(text, _image); // Pass the image along with the text
+              await _postService.savePost(text, _image, _webImage); // Pass the image along with the text
               Navigator.pop(context);
             },
             child: const Text('Post'),
@@ -192,9 +202,12 @@ class _AddPostsState extends State<AddPosts> {
                 decoration: const InputDecoration(hintText: 'Enter your post'),
               ),
               const SizedBox(height: 20),
-              _image != null
-                  ? Image.file(_image!, height: 200) // Display selected image
-                  : const SizedBox.shrink(),
+              if (_image != null)
+                Image.file(_image!, height: 200) // Display selected image for mobile
+              else if (_webImage != null)
+                Image.memory(_webImage!, height: 200) // Display selected image for web
+              else
+                const SizedBox.shrink(),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _pickImage,
