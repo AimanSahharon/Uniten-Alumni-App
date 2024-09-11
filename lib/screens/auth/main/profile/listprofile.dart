@@ -91,8 +91,8 @@ class _ListUsersState extends State<ListUsers> {
                           radius: 20,
                           backgroundImage: NetworkImage(user.profileImageUrl),
                         )
-                      : const Icon(Icons.person, size: 40),
-                    const SizedBox(width: 10),
+                      : Icon(Icons.person, size: 40),
+                    SizedBox(width: 10),
                     Text(user.name),
                   ],
                 ),

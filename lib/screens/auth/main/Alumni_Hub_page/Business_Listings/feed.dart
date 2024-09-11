@@ -44,6 +44,7 @@ import 'package:provider/provider.dart';
 import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Business_Listings/list_business_listings.dart';
 import 'package:uniten_alumni_app/services/businesslistings.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
 
 class Feed extends StatefulWidget {
   const Feed({super.key});
@@ -53,18 +54,18 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  final BusinessListingsService _BusinessListingsService = BusinessListingsService();
+  BusinessListingsService _BusinessListingsService = BusinessListingsService();
 
   @override
   Widget build(BuildContext context) {
     return FutureProvider<List<BusinessListingsModel>>.value(
       value: _BusinessListingsService.getFeed(FirebaseAuth.instance.currentUser!.uid),
-      initialData: const <BusinessListingsModel>[],
+      initialData: <BusinessListingsModel>[],
       child: Scaffold(
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color.fromARGB(255, 255, 0, 0), Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors for background colors
+              colors: [const Color.fromARGB(255, 255, 0, 0), const Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors for background colors
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

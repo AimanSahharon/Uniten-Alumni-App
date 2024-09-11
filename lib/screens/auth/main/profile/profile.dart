@@ -1862,12 +1862,12 @@ class _ProfileState extends State<Profile> {
       providers: [
         StreamProvider<List<PostModel>?>.value(
           value: _postService.getPostsByUser(uid),
-          initialData: const [],
+          initialData: [],
           
         ),
         StreamProvider<List<BusinessListingsModel>?>.value(
           value: _businessListingsService.getPostsByUser(uid),
-          initialData: const [],
+          initialData: [],
           
         ),
         StreamProvider<UserModel?>.value(
@@ -1916,7 +1916,7 @@ class _ProfileState extends State<Profile> {
                             final currentUser = FirebaseAuth.instance.currentUser;
 
                             if (currentUser == null) {
-                              return const Center(child: Text("Please log in to view the profile."));
+                              return Center(child: Text("Please log in to view the profile."));
                             }
 
                             return Column(
@@ -1929,7 +1929,7 @@ class _ProfileState extends State<Profile> {
                                       backgroundImage: NetworkImage(
                                           userModel?.profileImageUrl ?? ''),
                                       child: userModel?.profileImageUrl == null
-                                          ? const Icon(Icons.person, size: 60)
+                                          ? Icon(Icons.person, size: 60)
                                           : null,
                                     ),
                                     if (currentUser.uid == uid) //If the current user is logged in and they are viewing their own profile show Edit Profile button. If current user is viewing other user than show Follow/Unfollow button
@@ -2008,10 +2008,10 @@ class _ProfileState extends State<Profile> {
             },
             body: TabBarView(
               children: [
-                const Center(child: Text('Info Content')), // Placeholder for Info tab content
+                Center(child: Text('Info Content')), // Placeholder for Info tab content
                 Stack(
                   children: [
-                    const ListPosts(), // Posts tab content
+                    ListPosts(), // Posts tab content
                     Consumer<UserModel?>(
                       builder: (context, userModel, child) {
                         final currentUser = FirebaseAuth.instance.currentUser;
@@ -2035,7 +2035,7 @@ class _ProfileState extends State<Profile> {
                                       color: Colors.black.withOpacity(0.3),
                                       spreadRadius: 2,
                                       blurRadius: 8,
-                                      offset: const Offset(0, 4), // changes position of shadow
+                                      offset: Offset(0, 4), // changes position of shadow
                                     ),
                                   ],
                                 ),
@@ -2062,14 +2062,14 @@ class _ProfileState extends State<Profile> {
                             ),
                           );
                         }
-                        return const SizedBox.shrink(); // Return an empty widget if the condition is not met
+                        return SizedBox.shrink(); // Return an empty widget if the condition is not met
                       },
                     ),
                   ],
                 ),
-                const Center(child: Text('Interest Groups Content')), // Placeholder for Interest Groups tab content
+                Center(child: Text('Interest Groups Content')), // Placeholder for Interest Groups tab content
                 //Center(child: Text('Business Listings Content')), // Placeholder for Business Listings tab content
-                const BusinessListings(),
+                BusinessListings(),
               ],
             ),
           ),

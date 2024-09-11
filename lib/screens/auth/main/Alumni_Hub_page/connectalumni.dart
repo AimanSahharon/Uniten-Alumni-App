@@ -330,6 +330,7 @@ class UserProfilePage extends StatelessWidget {
 
 //TOREAD: This is Connect Alumni page to display all the user's profile to the currently logged in user
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uniten_alumni_app/models/user.dart';
@@ -344,18 +345,18 @@ class ConnectAlumni extends StatefulWidget {
 }
 
 class _ConnectAlumniState extends State<ConnectAlumni> {
-  final UserService _userService = UserService();
+  UserService _userService = UserService();
   String search = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connect Alumni'),
+        title: Text('Connect Alumni'),
       ),
       body: StreamProvider<List<UserModel>>.value(
         value: _userService.queryByName(search),
-        initialData: const [],
+        initialData: [],
         child: Column(
           children: [
             Padding(
@@ -366,13 +367,13 @@ class _ConnectAlumniState extends State<ConnectAlumni> {
                     search = text;
                   });
                 },
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Search...',
                   border: OutlineInputBorder(),
                 ),
               ),
             ),
-            const Expanded(child: ListUsers()), // display the user using listprofile.dart in Profile folder
+            Expanded(child: ListUsers()), // display the user using listprofile.dart in Profile folder
           ],
         ),
       ),

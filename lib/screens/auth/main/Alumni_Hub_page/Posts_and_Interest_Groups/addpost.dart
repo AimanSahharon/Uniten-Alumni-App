@@ -45,7 +45,6 @@ class _AddPostsState extends State<AddPosts> {
   }
 } */
 
-
 /*
 //TOREAD: This is Add Post page where user can type their post and upload to Firebase database
 import 'package:flutter/material.dart';
@@ -86,12 +85,12 @@ class _AddPostsState extends State<AddPosts> {
               await _postService.savePost(text, _image); // Pass the image along with the text
               Navigator.pop(context);
             },
-            child: const Text('Post'),
+            child: Text('Post'),
           ),
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Form(
           child: Column(
             children: [
@@ -101,16 +100,16 @@ class _AddPostsState extends State<AddPosts> {
                     text = val;
                   });
                 },
-                decoration: const InputDecoration(hintText: 'Enter your post'),
+                decoration: InputDecoration(hintText: 'Enter your post'),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               _image != null
                   ? Image.file(_image!, height: 200) // Display selected image
-                  : const SizedBox.shrink(),
-              const SizedBox(height: 20),
+                  : SizedBox.shrink(),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _pickImage,
-                child: const Text('Pick an image'),
+                child: Text('Pick an image'),
               ),
             ],
           ),
@@ -121,15 +120,11 @@ class _AddPostsState extends State<AddPosts> {
 } */
 
 
-//WITH WEB SUPPORT
-import 'package:flutter/foundation.dart';
+/*
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // Add this import for image picker
 import 'dart:io'; // For File
 import 'package:uniten_alumni_app/services/posts.dart';
-
-import 'dart:html' as html; // Import for web file picker
-// Import for Uint8List
 
 class AddPosts extends StatefulWidget {
   const AddPosts({super.key});
@@ -141,35 +136,15 @@ class AddPosts extends StatefulWidget {
 class _AddPostsState extends State<AddPosts> {
   final PostService _postService = PostService();
   String text = '';
-  File? _image; // For mobile
-  Uint8List? _webImage; // For web
+  File? _image; // To hold the image file
 
   // Function to pick an image
   Future<void> _pickImage() async {
-    if (kIsWeb) {
-      // Web
-      final fileInput = html.FileUploadInputElement();
-      fileInput.accept = 'image/*';
-      fileInput.onChange.listen((e) async {
-        final reader = html.FileReader();
-        reader.readAsArrayBuffer(fileInput.files![0]);
-
-        reader.onLoadEnd.listen((e) {
-          setState(() {
-            _webImage = reader.result as Uint8List;
-          });
-        });
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path); // Store the picked image
       });
-
-      fileInput.click();
-    } else {
-      // Mobile
-      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedImage != null) {
-        setState(() {
-          _image = File(pickedImage.path); // Store the picked image
-        });
-      }
     }
   }
 
@@ -181,15 +156,15 @@ class _AddPostsState extends State<AddPosts> {
         actions: [
           ElevatedButton(
             onPressed: () async {
-              await _postService.savePost(text, _image, _webImage); // Pass the image along with the text
+              await _postService.savePost(text, _image); // Pass the image along with the text
               Navigator.pop(context);
             },
-            child: const Text('Post'),
+            child: Text('Post'),
           ),
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Form(
           child: Column(
             children: [
@@ -199,19 +174,280 @@ class _AddPostsState extends State<AddPosts> {
                     text = val;
                   });
                 },
-                decoration: const InputDecoration(hintText: 'Enter your post'),
+                decoration: InputDecoration(hintText: 'Enter your post'),
               ),
-              const SizedBox(height: 20),
-              if (_image != null)
-                Image.file(_image!, height: 200) // Display selected image for mobile
-              else if (_webImage != null)
-                Image.memory(_webImage!, height: 200) // Display selected image for web
-              else
-                const SizedBox.shrink(),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
+              _image != null
+                  ? Image.file(_image!, height: 200) // Display selected image
+                  : SizedBox.shrink(),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _pickImage,
-                child: const Text('Pick an image'),
+                child: Text('Pick an image'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+} */
+
+/*
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // Add this import for image picker
+import 'dart:io' if (dart.library.html) 'dart:html'; // Conditional import
+import 'package:uniten_alumni_app/services/posts.dart';
+
+class AddPosts extends StatefulWidget {
+  const AddPosts({super.key});
+
+  @override
+  State<AddPosts> createState() => _AddPostsState();
+}
+
+class _AddPostsState extends State<AddPosts> {
+  final PostService _postService = PostService();
+  String text = '';
+  XFile? _image; // Using XFile instead of File for web compatibility
+
+  // Function to pick an image
+  Future<void> _pickImage() async {
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = pickedImage; // Store the picked image as XFile
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Post'),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+              await _postService.savePost(text, _image); // Pass the XFile image along with the text
+              Navigator.pop(context);
+            },
+            child: Text('Post'),
+          ),
+        ],
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        child: Form(
+          child: Column(
+            children: [
+              TextFormField(
+                onChanged: (val) {
+                  setState(() {
+                    text = val;
+                  });
+                },
+                decoration: InputDecoration(hintText: 'Enter your post'),
+              ),
+              SizedBox(height: 20),
+              _image != null
+                  ? Image.network(_image!.path, height: 200) // Use Image.network to display the image on web
+                  : SizedBox.shrink(),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Pick an image'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+} */
+
+/*
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
+
+class AddPosts extends StatefulWidget {
+  const AddPosts({super.key});
+
+  @override
+  State<AddPosts> createState() => _AddPostsState();
+}
+
+class _AddPostsState extends State<AddPosts> {
+  final PostService _postService = PostService();
+  String text = '';
+  XFile? _image; // Using XFile for compatibility with web
+
+  // Function to pick an image
+  Future<void> _pickImage() async {
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = pickedImage; // Store the picked image as XFile
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Post'),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+              await _postService.savePost(text, _image); // Pass the XFile image along with the text
+              Navigator.pop(context);
+            },
+            child: Text('Post'),
+          ),
+        ],
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        child: Form(
+          child: Column(
+            children: [
+              TextFormField(
+                onChanged: (val) {
+                  setState(() {
+                    text = val;
+                  });
+                },
+                decoration: InputDecoration(hintText: 'Enter your post'),
+              ),
+              SizedBox(height: 20),
+              _image != null
+                  ? kIsWeb
+                      ? FutureBuilder<Uint8List>(
+                          future: _image!.readAsBytes(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                              return Image.memory(
+                                snapshot.data!,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Error loading image');
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        )
+                      : Image.file(
+                          File(_image!.path),
+                          height: 200,
+                          fit: BoxFit.cover,
+                        )
+                  : SizedBox.shrink(),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Pick an image'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+} */
+
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
+
+class AddPosts extends StatefulWidget {
+  const AddPosts({super.key});
+
+  @override
+  State<AddPosts> createState() => _AddPostsState();
+}
+
+class _AddPostsState extends State<AddPosts> {
+  final PostService _postService = PostService();
+  String text = '';
+  XFile? _image; // Using XFile for compatibility with web
+
+  // Function to pick an image
+  Future<void> _pickImage() async {
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = pickedImage; // Store the picked image as XFile
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Post'),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+              await _postService.savePost(text, _image); // Pass the XFile image along with the text
+              Navigator.pop(context);
+            },
+            child: Text('Post'),
+          ),
+        ],
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        child: Form(
+          child: Column(
+            children: [
+              TextFormField(
+                onChanged: (val) {
+                  setState(() {
+                    text = val;
+                  });
+                },
+                decoration: InputDecoration(hintText: 'Enter your post'),
+              ),
+              SizedBox(height: 20),
+              _image != null
+                  ? kIsWeb
+                      ? FutureBuilder<Uint8List>(
+                          future: _image!.readAsBytes(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                              return Image.memory(
+                                snapshot.data!,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Error loading image');
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        )
+                      : Image.file(
+                          File(_image!.path),
+                          height: 200,
+                          fit: BoxFit.cover,
+                        )
+                  : SizedBox.shrink(),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Pick an image'),
               ),
             ],
           ),
@@ -220,3 +456,4 @@ class _AddPostsState extends State<AddPosts> {
     );
   }
 }
+

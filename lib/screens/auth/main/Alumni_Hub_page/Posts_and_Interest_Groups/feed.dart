@@ -15,23 +15,23 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  final PostService _postService = PostService();
+  PostService _postService = PostService();
 
   @override
   Widget build(BuildContext context) {
     return FutureProvider<List<PostModel>>.value(
       value: _postService.getFeed(FirebaseAuth.instance.currentUser!.uid),
-      initialData: const <PostModel>[],
+      initialData: <PostModel>[],
       child: Scaffold(
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color.fromARGB(255, 255, 0, 0), Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors for background colors
+              colors: [const Color.fromARGB(255, 255, 0, 0), const Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors for background colors
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
-          child: const ListPosts(),
+          child: ListPosts(),
         ),
       ),
     );

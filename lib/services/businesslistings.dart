@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +10,7 @@ import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/services/user.dart'; // For File
 
 class BusinessListingsService {
-  /*Future<void> savePost(String text, File? imageFile) async {
+  Future<void> savePost(String text, File? imageFile) async {
     String? imageUrl;
 
     // Upload image to Firebase Storage if there's an image selected
@@ -34,30 +33,7 @@ class BusinessListingsService {
     .snapshots()
     .map((snapshot) => snapshot.docs.map((doc) => BusinessListingsModel.fromFirestore(doc)).toList());
 }
-  } */
-
- Future<void> savePost(String text, File? imageFile, Uint8List? webImage) async {
-  String? imageUrl;
-
-  // Upload image to Firebase Storage if there's an image selected
-  if (imageFile != null) {
-    final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-    final uploadTask = await storageRef.putFile(imageFile);
-    imageUrl = await uploadTask.ref.getDownloadURL(); // Get the image URL
-  } else if (webImage != null) {
-    final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-    final uploadTask = await storageRef.putData(webImage);
-    imageUrl = await uploadTask.ref.getDownloadURL(); // Get the image URL
   }
-
-  // Save the post along with the image URL in Firestore
-  await FirebaseFirestore.instance.collection("Business Listing posts").add({
-    'text': text,
-    'imageUrl': imageUrl, // Save the image URL if there is an image
-    'creator': FirebaseAuth.instance.currentUser!.uid,
-    'timestamp': FieldValue.serverTimestamp(),
-  });
-}
 
  List<BusinessListingsModel> _postListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) { 
@@ -134,7 +110,7 @@ class BusinessListingsService {
         .collection("Business Listing poststs")
         .orderBy("text") 
         .startAt([search]) // If user search and type the first letter, start finding user starting those letters
-        .endAt(['$search\uf8ff'])
+        .endAt([search + '\uf8ff'])
         .limit(10) // Show 10 search results
         .snapshots()
         .map(_userListFromQuerySnapshot);
@@ -171,8 +147,21 @@ List<BusinessListingsModel> feedList = [];
     }
 
     // Method to edit a post
+/*Future<void> editPost(String postId, String newText) async {
+  final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(postId);
+  final doc = await postRef.get();
 
-   /*Future<void> editPost(String postId, String newText, File? newImageFile) async {
+  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
+    await postRef.update({
+      'text': newText,
+      'timestamp': FieldValue.serverTimestamp(), // Optionally update the timestamp
+    });
+  } else {
+    throw Exception('You are not authorized to edit this post.');
+  }
+    } */
+
+   Future<void> editPost(String postId, String newText, File? newImageFile) async {
   final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(postId);
 
   if (newImageFile != null) {
@@ -193,43 +182,6 @@ List<BusinessListingsModel> feedList = [];
       'text': newText,
       'timestamp': FieldValue.serverTimestamp(),
     });
-  }
-} */
-
-Future<void> editPost(
-  String postId,
-  String newText,
-  File? newImageFile,
-  Uint8List? newWebImage // Add this parameter for web image data
-) async {
-  final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(postId);
-  final doc = await postRef.get();
-  String? newImageUrl;
-
-  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
-    // If a new image is provided (mobile or web), upload it and get the new URL
-    if (newImageFile != null) {
-      // Mobile
-      final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-      final uploadTask = await storageRef.putFile(newImageFile);
-      newImageUrl = await uploadTask.ref.getDownloadURL();
-    } else if (newWebImage != null) {
-      // Web
-      final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-      final uploadTask = storageRef.putData(newWebImage);
-      newImageUrl = await (await uploadTask).ref.getDownloadURL();
-    } else {
-      // No new image
-      newImageUrl = doc.data()?['imageUrl'];
-    }
-
-    await postRef.update({
-      'text': newText,
-      'imageUrl': newImageUrl,
-      'timestamp': FieldValue.serverTimestamp(), // Optionally update the timestamp
-    });
-  } else {
-    throw Exception('You are not authorized to edit this post.');
   }
 }
 

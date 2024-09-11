@@ -1219,11 +1219,11 @@ class ListPosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserService userService = UserService();
-    PostService postService = PostService();
+    UserService _userService = UserService();
+    PostService _postService = PostService();
     final posts = Provider.of<List<PostModel>>(context);
 
-    if (posts.isEmpty) {
+    if (posts == null || posts.isEmpty) {
       return const Center(
         child: Text('No posts available.', style: TextStyle(fontSize: 18)),
       );
@@ -1233,7 +1233,7 @@ class ListPosts extends StatelessWidget {
       itemCount: posts.length + 1, // Add an extra item for the padding
       itemBuilder: (context, index) {
         if (index == posts.length) {
-          return const SizedBox(height: 80.0); // Add extra space after the last post
+          return SizedBox(height: 80.0); // Add extra space after the last post
         }
 
         final post = posts[index];
@@ -1247,7 +1247,7 @@ class ListPosts extends StatelessWidget {
 
             final post = PostModel.fromFirestore(snapshotPost.data!);
             return StreamBuilder<UserModel?>(
-              stream: userService.getUserInfo(post.creator),
+              stream: _userService.getUserInfo(post.creator),
               builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshotUser) {
                 if (!snapshotUser.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -1255,7 +1255,7 @@ class ListPosts extends StatelessWidget {
 
                 final user = snapshotUser.data;
                 return StreamBuilder<bool>(
-                  stream: postService.getCurrentUserLike(post),
+                  stream: _postService.getCurrentUserLike(post),
                   builder: (BuildContext context, AsyncSnapshot<bool> snapshotLike) {
                     if (!snapshotLike.hasData) {
                       return const Center(child: CircularProgressIndicator());
@@ -1355,7 +1355,7 @@ class ListPosts extends StatelessWidget {
                                                 color: Colors.red,
                                               ),
                                         onPressed: () {
-                                          postService.likePost(post, snapshotLike.data!);
+                                          _postService.likePost(post, snapshotLike.data!);
                                         },
                                       ),
                                       Text('${post.likeCount}', style: const TextStyle(fontSize: 16)),
@@ -1386,7 +1386,7 @@ class ListPosts extends StatelessWidget {
                                         IconButton(
                                           icon: const Icon(Icons.delete),
                                           onPressed: () async {
-                                            await postService.deletePost(post.id);
+                                            await _postService.deletePost(post.id);
                                           },
                                         ),
                                       ],

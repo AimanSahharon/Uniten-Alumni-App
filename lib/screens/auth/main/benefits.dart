@@ -10,9 +10,9 @@ class Benefits extends StatefulWidget {
 class _BenefitsState extends State<Benefits> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Color.fromARGB(255, 10, 164, 220), // Use backgroundColor instead of color
-      body: Center(
+      body: const Center(
         child: Text("BENEFITS"),
       ),
     );

@@ -44,7 +44,7 @@ class _BusinessListingsPageState extends State<BusinessListingsPage> {
   Widget build(BuildContext context) {
     return StreamProvider<List<BusinessListingsModel>?>.value(
       value: _postsStream,
-      initialData: const [],
+      initialData: [],
       child: DefaultTabController(
         length: 3, // Adjusted to match the number of tabs
         child: Scaffold(
@@ -236,7 +236,7 @@ class _BusinessListingsPageState extends State<BusinessListingsPage> {
               // Liked Posts Tab Content
               Stack(
                 children: [
-                  const LikedPostsScreen(), // Navigate to LikedPostsScreen
+                  LikedPostsScreen(), // Navigate to LikedPostsScreen
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(

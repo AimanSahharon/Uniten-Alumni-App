@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/services/businesslistings.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uniten_alumni_app/models/post.dart';
 import 'package:uniten_alumni_app/models/user.dart';
 import 'package:uniten_alumni_app/services/user.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +13,7 @@ import 'package:intl/intl.dart';
 class CommentScreen extends StatefulWidget {
   final BusinessListingsModel post;
 
-  const CommentScreen({super.key, required this.post});
+  const CommentScreen({Key? key, required this.post}) : super(key: key);
 
   @override
   _CommentScreenState createState() => _CommentScreenState();
@@ -64,7 +67,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
           Expanded(
             child: StreamProvider<List<BusinessListingsModel>>.value(
               value: _businessListingsService.getComments(widget.post.id),
-              initialData: const [],
+              initialData: [],
               builder: (context, child) {
                 final comments = Provider.of<List<BusinessListingsModel>>(context);
                 return ListView.builder(
@@ -82,11 +85,11 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                         }
 
                         final user = snapshot.data;
-                        final dateTime = (comment.timestamp).toDate();
+                        final dateTime = (comment.timestamp as Timestamp).toDate();
                         final formattedTime = DateFormat.yMMMd().add_jm().format(dateTime);
 
                         return Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.black,
@@ -106,10 +109,10 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(comment.text),
-                                const SizedBox(height: 4.0),
+                                SizedBox(height: 4.0),
                                 Text(
                                   formattedTime,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 12.0,
                                   ),
@@ -126,13 +129,13 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                                           showDialog(
                                             context: context,
                                             builder: (context) {
-                                              TextEditingController editController =
+                                              TextEditingController _editController =
                                                   TextEditingController(text: comment.text);
 
                                               return AlertDialog(
                                                 title: const Text('Edit Comment'),
                                                 content: TextField(
-                                                  controller: editController,
+                                                  controller: _editController,
                                                   decoration: const InputDecoration(
                                                     hintText: 'Edit your comment...',
                                                   ),
@@ -140,7 +143,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () async {
-                                                      await _businessListingsService.editComment(widget.post.id, comment.id, editController.text);
+                                                      await _businessListingsService.editComment(widget.post.id, comment.id, _editController.text);
                                                       Navigator.of(context).pop();
                                                     },
                                                     child: const Text('Save'),

@@ -327,6 +327,7 @@ class _EditProfileState extends State<EditProfile> {
 
 //TOREAD: This file is to allow user to edit their profile by uploading their profile images and banner similar to twitter
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uniten_alumni_app/services/user.dart';
@@ -339,7 +340,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final UserService _userService = UserService();
+  UserService _userService = UserService();
   
   File? _profileImage;
   File? _bannerImage;
@@ -350,19 +351,19 @@ class _EditProfileState extends State<EditProfile> {
     final pickedFile = await showDialog<XFile>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Select Image Source'),
+        title: Text('Select Image Source'),
         actions: [
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop(await picker.pickImage(source: ImageSource.camera));
             },
-            child: const Text('Take Photo'),
+            child: Text('Take Photo'),
           ),
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop(await picker.pickImage(source: ImageSource.gallery));
             },
-            child: const Text('Choose from Gallery'),
+            child: Text('Choose from Gallery'),
           ),
         ],
       ),
@@ -383,10 +384,10 @@ class _EditProfileState extends State<EditProfile> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: const Text("Edit Profile"),
+      title: Text("Edit Profile"),
     ),
     body: Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
       child: Form(
         child: Column(
           children: [
@@ -395,45 +396,45 @@ Widget build(BuildContext context) {
               child: Row(
                 children: [
                   _profileImage == null
-                      ? const Icon(Icons.person, size: 100)
+                      ? Icon(Icons.person, size: 100)
                       : Image.file(_profileImage!, height: 100, width: 100, fit: BoxFit.cover),
-                  const SizedBox(width: 10), // Add space between the icon and text
-                  const Text("Edit Profile Picture"),
+                  SizedBox(width: 10), // Add space between the icon and text
+                  Text("Edit Profile Picture"),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             GestureDetector(
               onTap: () => getImage(1),
               child: Row(
                 children: [
                   _bannerImage == null
-                      ? const Icon(Icons.photo, size: 100)
+                      ? Icon(Icons.photo, size: 100)
                       : Image.file(_bannerImage!, height: 100, width: 100, fit: BoxFit.cover),
-                  const SizedBox(width: 10), // Add space between the icon and text
-                  const Text("Edit Banner Image"),
+                  SizedBox(width: 10), // Add space between the icon and text
+                  Text("Edit Banner Image"),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             TextFormField(
               onChanged: (val) {
                 setState(() {
                   name = val;
                 });
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Name",
               ),
             ),
-            const SizedBox(height: 20), // Add some space between the TextFormField and the button
+            SizedBox(height: 20), // Add some space between the TextFormField and the button
             ElevatedButton(
               onPressed: () async {
                 // Allow updating either profile image, banner image, or both.
                 if (_profileImage == null && _bannerImage == null && name.isEmpty) {
                   // Handle error: prompt user to select at least one field to update
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please update at least one field (name, profile image, or banner image)')),
+                    SnackBar(content: Text('Please update at least one field (name, profile image, or banner image)')),
                   );
                 } else {
                   // Update the profile with whichever fields are provided

@@ -1047,11 +1047,12 @@ import 'package:uniten_alumni_app/screens/auth/main/benefits.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/connectalumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/homepage.dart';
 import 'package:uniten_alumni_app/screens/auth/main/mycard.dart';
+import 'package:uniten_alumni_app/screens/auth/main/profile/edit_profile.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile/profile.dart';
 import 'package:uniten_alumni_app/services/auth.dart';
 
 class NavMenu extends StatefulWidget {
-  const NavMenu({super.key});
+  const NavMenu({Key? key}) : super(key: key);
 
   @override
   _NavMenuState createState() => _NavMenuState();
@@ -1129,7 +1130,7 @@ class _NavMenuState extends State<NavMenu> {
           ],
         ),
         drawer: _buildDrawer(context), 
-        body: const MyCard(),
+        body: MyCard(),
       ),
       Scaffold(
         appBar: AppBar(
@@ -1204,7 +1205,7 @@ class _NavMenuState extends State<NavMenu> {
             title: const Text('Connect Alumni'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const ConnectAlumni()),
+                MaterialPageRoute(builder: (context) => ConnectAlumni()),
               );
             },
           ),

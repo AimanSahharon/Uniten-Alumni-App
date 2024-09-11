@@ -150,6 +150,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
     );
   }
 } */
+
 /*
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -160,7 +161,7 @@ import 'dart:io';
 class EditPostScreen extends StatefulWidget {
   final PostModel post;
 
-  const EditPostScreen({super.key, required this.post});
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
 
   @override
   _EditPostScreenState createState() => _EditPostScreenState();
@@ -178,8 +179,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker _picker = ImagePicker();
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -217,13 +218,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16.0),
+            SizedBox(height: 16.0),
             _imageFile != null
                 ? Image.file(_imageFile!)
                 : widget.post.imageUrl != null
                     ? Image.network(widget.post.imageUrl!)
                     : Container(),
-            const SizedBox(height: 16.0),
+            SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _pickImage,
               child: const Text('Pick Image'),
@@ -234,6 +235,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
     );
   }
 } */
+
 /*
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -244,7 +246,7 @@ import 'dart:io';
 class EditPostScreen extends StatefulWidget {
   final PostModel post;
 
-  const EditPostScreen({super.key, required this.post});
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
 
   @override
   _EditPostScreenState createState() => _EditPostScreenState();
@@ -262,8 +264,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker _picker = ImagePicker();
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -289,59 +291,47 @@ class _EditPostScreenState extends State<EditPostScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: _textController,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Edit your post...',
-                  border: OutlineInputBorder(),
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _textController,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Edit your post...',
+                border: OutlineInputBorder(),
               ),
-              const SizedBox(height: 16.0),
-              _imageFile != null
-                  ? ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 200), // Limit the height of the image
-                      child: Image.file(_imageFile!),
-                    )
-                  : widget.post.imageUrl != null
-                      ? ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: 200), // Limit the height of the image
-                          child: Image.network(widget.post.imageUrl!),
-                        )
-                      : Container(),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _pickImage,
-                child: const Text('Pick Image'),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 16.0),
+            _imageFile != null
+                ? Image.file(_imageFile!)
+                : widget.post.imageUrl != null
+                    ? Image.network(widget.post.imageUrl!)
+                    : Container(),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('Pick Image'),
+            ),
+          ],
         ),
       ),
     );
   }
 } */
 
-
-import 'package:flutter/foundation.dart';
+/*
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uniten_alumni_app/models/post.dart';
 import 'package:uniten_alumni_app/services/posts.dart';
 import 'dart:io';
-import 'dart:typed_data'; // Import for Uint8List
-import 'dart:html' as html; // Import for web file picker
 
 class EditPostScreen extends StatefulWidget {
   final PostModel post;
 
-  const EditPostScreen({super.key, required this.post});
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
 
   @override
   _EditPostScreenState createState() => _EditPostScreenState();
@@ -350,45 +340,219 @@ class EditPostScreen extends StatefulWidget {
 class _EditPostScreenState extends State<EditPostScreen> {
   final PostService _postService = PostService();
   late TextEditingController _textController;
-  File? _imageFile; // For mobile
-  Uint8List? _webImage; // For web
+  File? _imageFile;
+  String? _existingImageUrl;
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.post.text);
+    _existingImageUrl = widget.post.imageUrl; // Preserve existing image URL
   }
 
   Future<void> _pickImage() async {
-    if (kIsWeb) {
-      // Web
-      final fileInput = html.FileUploadInputElement();
-      fileInput.accept = 'image/*';
-      fileInput.onChange.listen((e) async {
-        final reader = html.FileReader();
-        reader.readAsArrayBuffer(fileInput.files![0]);
+    final ImagePicker _picker = ImagePicker();
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-        reader.onLoadEnd.listen((e) {
-          setState(() {
-            _webImage = reader.result as Uint8List;
-          });
-        });
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
       });
-
-      fileInput.click();
-    } else {
-      // Mobile
-      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedImage != null) {
-        setState(() {
-          _imageFile = File(pickedImage.path); // Store the picked image
-        });
-      }
     }
   }
 
   Future<void> _savePost() async {
-    await _postService.editPost(widget.post.id, _textController.text, _imageFile, _webImage);
+    await _postService.editPost(
+      widget.post.id,
+      _textController.text,
+      _imageFile,
+      _existingImageUrl,
+    );
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Post'),
+        actions: [
+          ElevatedButton(
+            onPressed: _savePost,
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _textController,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Edit your post...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            _imageFile != null
+                ? Image.file(_imageFile!)
+                : _existingImageUrl != null
+                    ? Image.network(_existingImageUrl!)
+                    : Container(),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('Pick Image'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}*/
+/*
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uniten_alumni_app/models/post.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
+import 'dart:io';
+
+class EditPostScreen extends StatefulWidget {
+  final PostModel post;
+
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+
+  @override
+  _EditPostScreenState createState() => _EditPostScreenState();
+}
+
+class _EditPostScreenState extends State<EditPostScreen> {
+  final PostService _postService = PostService();
+  late TextEditingController _textController;
+  File? _imageFile;
+  String? _existingImageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController(text: widget.post.text);
+    _existingImageUrl = widget.post.imageUrl; // Preserve existing image URL
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _savePost() async {
+    await _postService.editPost(
+      widget.post.id,
+      _textController.text,
+      _imageFile,
+      _existingImageUrl,
+    );
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Post'),
+        actions: [
+          ElevatedButton(
+            onPressed: _savePost,
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _textController,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Edit your post...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            _imageFile != null
+                ? Image.file(_imageFile!)
+                : _existingImageUrl != null
+                    ? Image.network(_existingImageUrl!)
+                    : Container(),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('Pick Image'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+} */
+
+/*
+import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uniten_alumni_app/models/post.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
+import 'dart:io';
+import 'dart:typed_data';
+
+class EditPostScreen extends StatefulWidget {
+  final PostModel post;
+
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+
+  @override
+  _EditPostScreenState createState() => _EditPostScreenState();
+}
+
+class _EditPostScreenState extends State<EditPostScreen> {
+  final PostService _postService = PostService();
+  late TextEditingController _textController;
+  XFile? _imageFile; // Use XFile for web compatibility
+  String? _existingImageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController(text: widget.post.text);
+    _existingImageUrl = widget.post.imageUrl; // Preserve existing image URL
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    }
+  }
+
+  Future<void> _savePost() async {
+    await _postService.editPost(
+      widget.post.id,
+      _textController.text,
+      _imageFile != null ? (kIsWeb ? null : File(_imageFile!.path)) : null,
+      _existingImageUrl,
+    );
     Navigator.pop(context);
   }
 
@@ -405,48 +569,448 @@ class _EditPostScreenState extends State<EditPostScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center, // Center the column items
-            children: [
-              TextField(
-                controller: _textController,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Edit your post...',
-                  border: OutlineInputBorder(),
-                ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _textController,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Edit your post...',
+                border: OutlineInputBorder(),
               ),
-              const SizedBox(height: 16.0),
-              // Center the image and button
-              Center(
-                child: _imageFile != null
-                    ? ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 200), // Limit the height of the image
-                        child: Image.file(_imageFile!),
+            ),
+            SizedBox(height: 16.0),
+            _imageFile != null
+                ? kIsWeb
+                    ? FutureBuilder<Uint8List>(
+                        future: _imageFile!.readAsBytes(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                            return Image.memory(
+                              snapshot.data!,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error loading image');
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
                       )
-                    : _webImage != null
-                        ? ConstrainedBox(
-                            constraints: BoxConstraints(maxHeight: 200), // Limit the height of the image
-                            child: Image.memory(_webImage!),
-                          )
-                        : widget.post.imageUrl != null
-                            ? ConstrainedBox(
-                                constraints: BoxConstraints(maxHeight: 200), // Limit the height of the image
-                                child: Image.network(widget.post.imageUrl!),
-                              )
-                            : Container(),
-              ),
-              const SizedBox(height: 16.0),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _pickImage,
-                  child: const Text('Pick Image'),
-                ),
-              ),
-            ],
+                    : Image.file(
+                        File(_imageFile!.path),
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )
+                : _existingImageUrl != null
+                    ? Image.network(_existingImageUrl!)
+                    : Container(),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('Pick Image'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+} */
+
+/*
+import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uniten_alumni_app/models/post.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
+import 'dart:io';
+import 'dart:typed_data';
+
+class EditPostScreen extends StatefulWidget {
+  final PostModel post;
+
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+
+  @override
+  _EditPostScreenState createState() => _EditPostScreenState();
+}
+
+class _EditPostScreenState extends State<EditPostScreen> {
+  final PostService _postService = PostService();
+  late TextEditingController _textController;
+  XFile? _imageFile; // Use XFile for web compatibility
+  String? _existingImageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController(text: widget.post.text);
+    _existingImageUrl = widget.post.imageUrl; // Preserve existing image URL
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    }
+  }
+
+  Future<void> _savePost() async {
+    await _postService.editPost(
+      widget.post.id,
+      _textController.text,
+      _imageFile != null ? (kIsWeb ? null : File(_imageFile!.path)) : null,
+      _existingImageUrl,
+    );
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Post'),
+        actions: [
+          ElevatedButton(
+            onPressed: _savePost,
+            child: const Text('Save'),
           ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _textController,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Edit your post...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            _imageFile != null
+                ? kIsWeb
+                    ? FutureBuilder<Uint8List>(
+                        future: _imageFile!.readAsBytes(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                            return Image.memory(
+                              snapshot.data!,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error loading image');
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      )
+                    : Image.file(
+                        File(_imageFile!.path),
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )
+                : _existingImageUrl != null
+                    ? Image.network(_existingImageUrl!)
+                    : Container(),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('Pick Image'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+} */
+
+
+/* THIS ONE IS PERFECT JUST SIZE PROBLEM
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uniten_alumni_app/models/post.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
+import 'dart:io';
+import 'dart:typed_data';
+
+class EditPostScreen extends StatefulWidget {
+  final PostModel post;
+
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+
+  @override
+  _EditPostScreenState createState() => _EditPostScreenState();
+}
+
+class _EditPostScreenState extends State<EditPostScreen> {
+  final PostService _postService = PostService();
+  late TextEditingController _textController;
+  XFile? _imageFile; // Use XFile for web compatibility
+  String? _existingImageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController(text: widget.post.text);
+    _existingImageUrl = widget.post.imageUrl; // Preserve existing image URL
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    }
+  }
+
+  Future<void> _savePost() async {
+    String? newImageUrl;
+
+    if (_imageFile != null) {
+      final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+      try {
+        Uint8List imageBytes = await _imageFile!.readAsBytes();
+        final uploadTask = storageRef.putData(imageBytes);
+        newImageUrl = await (await uploadTask).ref.getDownloadURL();
+        print("Image uploaded successfully: $newImageUrl");
+      } catch (e) {
+        print("Error uploading image: $e");
+        return;
+      }
+    } else {
+      newImageUrl = _existingImageUrl;
+    }
+
+    try {
+      await _postService.editPost(
+        widget.post.id,
+        _textController.text,
+        _imageFile != null ? (kIsWeb ? null : File(_imageFile!.path)) : null,
+        newImageUrl,
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      print("Error saving post: $e");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Post'),
+        actions: [
+          ElevatedButton(
+            onPressed: _savePost,
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _textController,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Edit your post...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            _imageFile != null
+                ? kIsWeb
+                    ? FutureBuilder<Uint8List>(
+                        future: _imageFile!.readAsBytes(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                            return Image.memory(
+                              snapshot.data!,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error loading image');
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      )
+                    : Image.file(
+                        File(_imageFile!.path),
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )
+                : _existingImageUrl != null
+                    ? Image.network(_existingImageUrl!)
+                    : Container(),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('Pick Image'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+} */
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uniten_alumni_app/models/post.dart';
+import 'package:uniten_alumni_app/services/posts.dart';
+import 'dart:io';
+import 'dart:typed_data';
+
+class EditPostScreen extends StatefulWidget {
+  final PostModel post;
+
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+
+  @override
+  _EditPostScreenState createState() => _EditPostScreenState();
+}
+
+class _EditPostScreenState extends State<EditPostScreen> {
+  final PostService _postService = PostService();
+  late TextEditingController _textController;
+  XFile? _imageFile; // Use XFile for web compatibility
+  String? _existingImageUrl;
+
+  // Define a constant for image height
+  static const double _imageHeight = 200.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController(text: widget.post.text);
+    _existingImageUrl = widget.post.imageUrl; // Preserve existing image URL
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    }
+  }
+
+  Future<void> _savePost() async {
+    String? newImageUrl;
+
+    if (_imageFile != null) {
+      final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+      try {
+        Uint8List imageBytes = await _imageFile!.readAsBytes();
+        final uploadTask = storageRef.putData(imageBytes);
+        newImageUrl = await (await uploadTask).ref.getDownloadURL();
+        print("Image uploaded successfully: $newImageUrl");
+      } catch (e) {
+        print("Error uploading image: $e");
+        return;
+      }
+    } else {
+      newImageUrl = _existingImageUrl;
+    }
+
+    try {
+      await _postService.editPost(
+        widget.post.id,
+        _textController.text,
+        _imageFile != null ? (kIsWeb ? null : File(_imageFile!.path)) : null,
+        newImageUrl,
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      print("Error saving post: $e");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Post'),
+        actions: [
+          ElevatedButton(
+            onPressed: _savePost,
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _textController,
+              maxLines: null,
+              decoration: const InputDecoration(
+                hintText: 'Edit your post...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            _imageFile != null
+                ? kIsWeb
+                    ? FutureBuilder<Uint8List>(
+                        future: _imageFile!.readAsBytes(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                            return Image.memory(
+                              snapshot.data!,
+                              height: _imageHeight,
+                              fit: BoxFit.cover,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error loading image');
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      )
+                    : Image.file(
+                        File(_imageFile!.path),
+                        height: _imageHeight,
+                        fit: BoxFit.cover,
+                      )
+                : _existingImageUrl != null
+                    ? Image.network(
+                        _existingImageUrl!,
+                        height: _imageHeight,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('Pick Image'),
+            ),
+          ],
         ),
       ),
     );

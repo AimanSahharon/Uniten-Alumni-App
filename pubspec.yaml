@@ -44,7 +44,7 @@ dependencies:
   image_picker: ^1.1.2
   quiver: ^3.2.2
   intl: ^0.19.0
-  file_picker: ^8.1.2
+  firebase_core_web: ^2.18.0
 
 
 dev_dependencies:

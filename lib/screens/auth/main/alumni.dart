@@ -120,6 +120,7 @@ import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Business_Listings/business_listings.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/connectalumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/posts_and_interest_groups.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/feed.dart';
 
 class Alumni extends StatefulWidget {
   const Alumni({super.key});
@@ -207,7 +208,7 @@ class _AlumniState extends State<Alumni> {
               // Navigate to MyCard when this button is tapped
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ConnectAlumni()),
+                MaterialPageRoute(builder: (context) => ConnectAlumni()),
               );
             }
 
