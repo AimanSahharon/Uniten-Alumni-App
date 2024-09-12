@@ -1,5 +1,6 @@
 
 //TOREAD: This is Add Post page where user can type their post and upload to Firebase database
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // Add this import for image picker
 import 'dart:io'; // For File
@@ -13,16 +14,16 @@ class AddBusinessListings extends StatefulWidget {
 }
 
 class _AddBusinessListingsState extends State<AddBusinessListings> {
-  final BusinessListingsService _businessListingService = BusinessListingsService();
+ final BusinessListingsService _businessListingsService = BusinessListingsService();
   String text = '';
-  File? _image; // To hold the image file
+  XFile? _image; // Using XFile for compatibility with web
 
   // Function to pick an image
   Future<void> _pickImage() async {
     final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
-        _image = File(pickedImage.path); // Store the picked image
+        _image = pickedImage; // Store the picked image as XFile
       });
     }
   }
@@ -31,11 +32,11 @@ class _AddBusinessListingsState extends State<AddBusinessListings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Post'),
+        title: const Text('Add Post'),
         actions: [
           ElevatedButton(
             onPressed: () async {
-              await _businessListingService.savePost(text, _image); // Pass the image along with the text
+              await _businessListingsService.savePost(text, _image); // Pass the XFile image along with the text
               Navigator.pop(context);
             },
             child: Text('Post'),
@@ -57,7 +58,28 @@ class _AddBusinessListingsState extends State<AddBusinessListings> {
               ),
               SizedBox(height: 20),
               _image != null
-                  ? Image.file(_image!, height: 200) // Display selected image
+                  ? kIsWeb
+                      ? FutureBuilder<Uint8List>(
+                          future: _image!.readAsBytes(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                              return Image.memory(
+                                snapshot.data!,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Error loading image');
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        )
+                      : Image.file(
+                          File(_image!.path),
+                          height: 200,
+                          fit: BoxFit.cover,
+                        )
                   : SizedBox.shrink(),
               SizedBox(height: 20),
               ElevatedButton(

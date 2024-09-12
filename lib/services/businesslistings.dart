@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart'; // Import Firebase Storage
+import 'package:image_picker/image_picker.dart';
 import 'package:quiver/iterables.dart';
 import 'dart:io';
 
@@ -10,7 +12,7 @@ import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/services/user.dart'; // For File
 
 class BusinessListingsService {
-  Future<void> savePost(String text, File? imageFile) async {
+  /*Future<void> savePost(String text, File? imageFile) async {
     String? imageUrl;
 
     // Upload image to Firebase Storage if there's an image selected
@@ -33,7 +35,32 @@ class BusinessListingsService {
     .snapshots()
     .map((snapshot) => snapshot.docs.map((doc) => BusinessListingsModel.fromFirestore(doc)).toList());
 }
-  }
+  } */
+
+ Future<void> savePost(String text, XFile? imageFile) async {
+    String? imageUrl;
+
+    // Upload image to Firebase Storage if there's an image selected
+    if (imageFile != null) {
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+      // For web and mobile, we use `XFile.readAsBytes`
+      Uint8List imageBytes = await imageFile.readAsBytes();
+
+      final uploadTask = await storageRef.putData(imageBytes);
+      imageUrl = await uploadTask.ref.getDownloadURL(); // Get the image URL
+    }
+
+    // Save the post along with the image URL in Firestore
+    await FirebaseFirestore.instance.collection("Business Listing posts").add({
+      'text': text,
+      'imageUrl': imageUrl, // Save the image URL if there is an image
+      'creator': FirebaseAuth.instance.currentUser!.uid,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  } 
 
  List<BusinessListingsModel> _postListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) { 
@@ -107,7 +134,7 @@ class BusinessListingsService {
   //Search posts based on the first character since Firebase does not have full text search feature
    Stream<List<BusinessListingsModel>> searchPosts(String search) {
     return FirebaseFirestore.instance
-        .collection("Business Listing poststs")
+        .collection("Business Listing posts")
         .orderBy("text") 
         .startAt([search]) // If user search and type the first letter, start finding user starting those letters
         .endAt([search + '\uf8ff'])
@@ -161,7 +188,7 @@ List<BusinessListingsModel> feedList = [];
   }
     } */
 
-   Future<void> editPost(String postId, String newText, File? newImageFile) async {
+   /*Future<void> editPost(String postId, String newText, File? newImageFile) async {
   final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(postId);
 
   if (newImageFile != null) {
@@ -183,7 +210,33 @@ List<BusinessListingsModel> feedList = [];
       'timestamp': FieldValue.serverTimestamp(),
     });
   }
-}
+} */
+
+Future<void> editPost(String postId, String newText, File? newImageFile, String? existingImageUrl) async {
+    final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(postId);
+    final doc = await postRef.get();
+    String? newImageUrl;
+
+    if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
+      // If a new image is provided, upload it and get the new URL
+      if (newImageFile != null) {
+        final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+        final uploadTask = await storageRef.putFile(newImageFile);
+        newImageUrl = await uploadTask.ref.getDownloadURL();
+      } else {
+        newImageUrl = existingImageUrl; // Use existing image URL if no new image is provided
+      }
+
+      await postRef.update({
+        'text': newText,
+        'imageUrl': newImageUrl,
+        'timestamp': FieldValue.serverTimestamp(), // Optionally update the timestamp
+      });
+    } else {
+      throw Exception('You are not authorized to edit this post.');
+    }
+  }
+
 
 // Method to delete a post
 Future<void> deletePost(String postId) async {
