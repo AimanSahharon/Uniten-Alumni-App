@@ -1533,7 +1533,7 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
   Widget build(BuildContext context) {
     return StreamProvider<List<PostModel>?>.value(
       value: _postsStream,
-      initialData: [],
+      initialData: const [],
       child: DefaultTabController(
         length: 4, // Adjusted to match the number of tabs
         child: Scaffold(
@@ -1623,7 +1623,7 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
                       padding: const EdgeInsets.all(16.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
@@ -1673,9 +1673,9 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
                         ],
                       ),
                     ),
-                    child: Column(
+                    child: const Column(
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: Feed(),
                         ),
                       ],
@@ -1687,7 +1687,7 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
                       padding: const EdgeInsets.all(16.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
@@ -1726,14 +1726,14 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
               // Liked Posts Tab Content
               Stack(
                 children: [
-                  LikedPostsScreen(), // Navigate to LikedPostsScreen
+                  const LikedPostsScreen(), // Navigate to LikedPostsScreen
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
@@ -1797,7 +1797,7 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
                       padding: const EdgeInsets.all(16.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [

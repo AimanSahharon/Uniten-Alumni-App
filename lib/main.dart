@@ -71,6 +71,8 @@ class MyApp extends StatelessWidget {
 
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
+   MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -87,13 +89,13 @@ class MyApp extends StatelessWidget {
           return StreamProvider<UserModel?>.value(
             value: AuthService().user,
             initialData: null,
-            child: MaterialApp(home: Wrapper()),
+            child: const MaterialApp(home: Wrapper()),
             );
           
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        return Text("Loading");
+        return const Text("Loading");
       },
     );
   }

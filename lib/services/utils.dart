@@ -40,4 +40,3 @@ class UtilsService {
     return fileURL;
   }
 }
-

@@ -140,7 +140,7 @@ class PostService {
         .collection("posts")
         .orderBy("text") 
         .startAt([search]) // If user search and type the first letter, start finding user starting those letters
-        .endAt([search + '\uf8ff'])
+        .endAt(['$search\uf8ff'])
         .limit(10) // Show 10 search results
         .snapshots()
         .map(_userListFromQuerySnapshot);

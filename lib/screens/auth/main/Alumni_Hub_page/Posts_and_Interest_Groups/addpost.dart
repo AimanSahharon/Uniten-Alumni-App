@@ -402,12 +402,12 @@ class _AddPostsState extends State<AddPosts> {
               await _postService.savePost(text, _image); // Pass the XFile image along with the text
               Navigator.pop(context);
             },
-            child: Text('Post'),
+            child: const Text('Post'),
           ),
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Form(
           child: Column(
             children: [
@@ -417,9 +417,9 @@ class _AddPostsState extends State<AddPosts> {
                     text = val;
                   });
                 },
-                decoration: InputDecoration(hintText: 'Enter your post'),
+                decoration: const InputDecoration(hintText: 'Enter your post'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _image != null
                   ? kIsWeb
                       ? FutureBuilder<Uint8List>(
@@ -432,9 +432,9 @@ class _AddPostsState extends State<AddPosts> {
                                 fit: BoxFit.cover,
                               );
                             } else if (snapshot.hasError) {
-                              return Text('Error loading image');
+                              return const Text('Error loading image');
                             } else {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                           },
                         )
@@ -443,11 +443,11 @@ class _AddPostsState extends State<AddPosts> {
                           height: 200,
                           fit: BoxFit.cover,
                         )
-                  : SizedBox.shrink(),
-              SizedBox(height: 20),
+                  : const SizedBox.shrink(),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _pickImage,
-                child: Text('Pick an image'),
+                child: const Text('Pick an image'),
               ),
             ],
           ),
