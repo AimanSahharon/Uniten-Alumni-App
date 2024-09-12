@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/services/auth.dart'; //to use stateful widget or widget
 
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class SignUp extends StatefulWidget { //create this class as a widget that represents the user interface, statefulwidget means if the UI will change
+  const SignUp({super.key}); //Key for flutter to differentiate the classes
 
   @override
   State<SignUp> createState() => _SignUpState();

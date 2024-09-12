@@ -469,7 +469,7 @@ class BusinessListings extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Profile(uid: post.creator), // Navigate to the user's profile
+                                      builder: (context) => Profile(uid: post.creator, userId: '',), // Navigate to the user's profile
                                     ),
                                   );
                                 },

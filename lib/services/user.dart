@@ -1,4 +1,7 @@
+//TOREAD: This is to handle user profile page with Firebase
+
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uniten_alumni_app/models/user.dart';
@@ -110,6 +113,7 @@ class UserService {
     .delete();
   }
 
+/*
   Future<void> updateProfile(File? bannerImage, File? profileImage, String name) async {
     String bannerImageUrl = '';
     String profileImageUrl = '';
@@ -125,6 +129,47 @@ class UserService {
     }
 
     Map<String, dynamic> data = {}; // Use a plain Map
+
+    if (name.isNotEmpty) data['name'] = name;
+    if (profileImageUrl.isNotEmpty) data['profileImageUrl'] = profileImageUrl;
+    if (bannerImageUrl.isNotEmpty) data['bannerImageUrl'] = bannerImageUrl;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update(data);
+  } */
+
+ Future<void> updateProfile(File? bannerImage, File? profileImage, String name, Uint8List? webProfileImage, Uint8List? webBannerImage) async {
+    String bannerImageUrl = '';
+    String profileImageUrl = '';
+
+    // Upload for web (Uint8List) or mobile (File)
+    if (webBannerImage != null) {
+      bannerImageUrl = await _utilsService.uploadFileFromBytes(
+        webBannerImage, 
+        'user/profile/${FirebaseAuth.instance.currentUser!.uid}/banner'
+      );
+    } else if (bannerImage != null) {
+      bannerImageUrl = await _utilsService.uploadFile(
+        bannerImage, 
+        'user/profile/${FirebaseAuth.instance.currentUser!.uid}/banner'
+      );
+    }
+
+    if (webProfileImage != null) {
+      profileImageUrl = await _utilsService.uploadFileFromBytes(
+        webProfileImage, 
+        'user/profile/${FirebaseAuth.instance.currentUser!.uid}/profile'
+      );
+    } else if (profileImage != null) {
+      profileImageUrl = await _utilsService.uploadFile(
+        profileImage, 
+        'user/profile/${FirebaseAuth.instance.currentUser!.uid}/profile'
+      );
+    }
+
+    Map<String, dynamic> data = {};
 
     if (name.isNotEmpty) data['name'] = name;
     if (profileImageUrl.isNotEmpty) data['profileImageUrl'] = profileImageUrl;

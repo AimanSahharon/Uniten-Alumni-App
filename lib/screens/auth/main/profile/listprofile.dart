@@ -77,7 +77,7 @@ class _ListUsersState extends State<ListUsers> {
         return InkWell(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => Profile(uid: user.id), // Pass the selected user's ID
+              builder: (context) => Profile(uid: user.id, userId: '',), // Pass the selected user's ID
             ),
           ),
           child: Column(
