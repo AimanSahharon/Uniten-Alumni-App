@@ -1,3 +1,5 @@
+//TOREAD: This is to handle user backend logic to the firebase server
+
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';

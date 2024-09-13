@@ -424,6 +424,7 @@ class _LikedPostsScreenState extends State<LikedPostsScreen> {
   }
 } */
 
+//TOREAD: This is to like a post
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -448,7 +449,7 @@ class _LikedPostsScreenState extends State<LikedPostsScreen> {
   void initState() {
     super.initState();
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    _likedPostsFuture = BusinessListingsService().getLikedPosts(userId);
+    _likedPostsFuture = BusinessListingsService().getLikedPosts(userId); //use getLikedPosts function in businesslistings.dart in service folder
   }
 
   @override
@@ -585,14 +586,14 @@ class _LikedPostsScreenState extends State<LikedPostsScreen> {
                                                   Icons.favorite_border,
                                                   color: Colors.red,
                                                 ),
-                                          onPressed: () {
+                                          onPressed: () { //when press on the heart/like icon increase the like count
                                             BusinessListingsService().likePost(post, snapshotLike.data!);
                                           },
                                         ),
                                         Text('${post.likeCount}', style: const TextStyle(fontSize: 16)),
                                         IconButton(
                                           icon: const Icon(Icons.comment),
-                                          onPressed: () {
+                                          onPressed: () { //when press on the comment icon go to comment page
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -602,7 +603,7 @@ class _LikedPostsScreenState extends State<LikedPostsScreen> {
                                           },
                                         ),
                                         Text('${post.commentCount ?? 0}', style: const TextStyle(fontSize: 16)),
-                                        if (isCreator) ...[
+                                        if (isCreator) ...[ //If this post is made by the owner then display the edit symbols
                                           IconButton(
                                             icon: const Icon(Icons.edit),
                                             onPressed: () {

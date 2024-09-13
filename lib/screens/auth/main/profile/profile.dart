@@ -1826,6 +1826,8 @@ class _ProfileState extends State<Profile> {
   }
 } */
 
+
+//TOREAD: This is to display the profile page
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

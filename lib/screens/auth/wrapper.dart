@@ -43,7 +43,7 @@ class Wrapper extends StatelessWidget {
 
   } */
 
-
+//This is to name the pages or create routes by calling the defined name instead of calling the function name but some pages didn't use this
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

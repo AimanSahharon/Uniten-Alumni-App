@@ -1,4 +1,4 @@
-//TOREAD: This file is to allow user to post content to the firebase server
+//TOREAD: This file is to allow user to post content to the firebase server as well as handle the backend for Posts
 
 import 'dart:developer';
 import 'dart:io';

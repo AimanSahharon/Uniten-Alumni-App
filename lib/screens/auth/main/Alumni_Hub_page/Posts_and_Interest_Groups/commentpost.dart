@@ -843,6 +843,8 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
     );
   }
 } */
+
+//TOREAD: This is to comment a post
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/screens/auth/main/profile/profile.dart';

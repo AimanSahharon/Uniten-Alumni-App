@@ -1,3 +1,5 @@
+//TOREAD: This page is to display the business listings page with differents tabs e.g Business Listings, Followed User Posts and Liked Business Listings
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,9 +20,9 @@ class BusinessListingsPage extends StatefulWidget {
 }
 
 class _BusinessListingsPageState extends State<BusinessListingsPage> {
-  final BusinessListingsService _businessListingsService = BusinessListingsService();
-  final TextEditingController _searchController = TextEditingController();
-  Stream<List<BusinessListingsModel>>? _postsStream;
+  final BusinessListingsService _businessListingsService = BusinessListingsService(); //Use Business Listing services' function that is declared in businesslistings.dart in service folder
+  final TextEditingController _searchController = TextEditingController(); //To enable search function for the post
+  Stream<List<BusinessListingsModel>>? _postsStream; //stream the data from businesslistings.dart in models folder
 
   @override
   void initState() {
@@ -46,14 +48,14 @@ class _BusinessListingsPageState extends State<BusinessListingsPage> {
       value: _postsStream,
       initialData: const [],
       child: DefaultTabController(
-        length: 3, // Adjusted to match the number of tabs
+        length: 3, // Declare 3 tabs on the page
         child: Scaffold(
           appBar: AppBar(
-            leading: IconButton(
+            leading: IconButton( //go back button
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            bottom: const TabBar(
+            bottom: const TabBar( //Naming the tab bar
               tabs: [
                 Tab(
                   child: Column(

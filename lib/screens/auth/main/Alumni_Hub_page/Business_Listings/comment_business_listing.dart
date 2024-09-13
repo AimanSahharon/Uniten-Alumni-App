@@ -1,3 +1,5 @@
+//TOREAD: This is to allow user to comment the post
+
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/services/businesslistings.dart';
@@ -44,7 +46,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
     _focusNode.dispose();
     super.dispose();
   }
-
+  //Scroll to bottom after user has sent a comment
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -71,16 +73,17 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                   controller: _scrollController,
                   itemCount: comments.length,
                   itemBuilder: (context, index) {
-                    final comment = comments[index];
+                    final comment = comments[index]; //to list the comments
                     final isCreator = comment.creator == FirebaseAuth.instance.currentUser?.uid;
 
+                    //to get user's name on the comment
                     return FutureBuilder<UserModel?>(
                       future: UserService().getUserInfo(comment.creator).first,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return const Center(child: CircularProgressIndicator());
                         }
-
+                        //provide timestamp data on the comments using the date format
                         final user = snapshot.data;
                         final dateTime = (comment.timestamp).toDate();
                         final formattedTime = DateFormat.yMMMd().add_jm().format(dateTime);
@@ -94,6 +97,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                               ),
                             ),
                           ),
+                          //display the user profile picture in circle image
                           child: ListTile(
                             leading: user?.profileImageUrl != null
                                 ? CircleAvatar(
@@ -129,6 +133,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                                               TextEditingController editController =
                                                   TextEditingController(text: comment.text);
 
+                                              //To edit comments
                                               return AlertDialog(
                                                 title: const Text('Edit Comment'),
                                                 content: TextField(
@@ -151,6 +156,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
                                           );
                                         },
                                       ),
+                                      //To delete comments
                                       IconButton(
                                         icon: const Icon(Icons.delete),
                                         onPressed: () async {
@@ -169,6 +175,7 @@ class _CommentScreenState extends State<CommentScreen> with WidgetsBindingObserv
               },
             ),
           ),
+          //When user press on the text box, raise the text box above the phone's keyboard and once user tap on send comment icon, bring down the text box so user can read the comments
           Padding(
             padding: EdgeInsets.only(bottom: _keyboardHeight),
             child: Row(

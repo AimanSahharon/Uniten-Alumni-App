@@ -1035,7 +1035,7 @@ Drawer _buildDrawer(BuildContext context) {
   }
 } */
 
-//TOREAD: This file is to create bottom navigation menu and make it constant
+//TOREAD: This file is to create bottom navigation menu and make it constant across all pages
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

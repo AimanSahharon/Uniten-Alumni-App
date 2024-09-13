@@ -1,3 +1,4 @@
+//TOREAD: This is to allow user to create new account
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/services/auth.dart'; //to use stateful widget or widget
 

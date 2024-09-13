@@ -362,6 +362,8 @@ class _AddPostsState extends State<AddPosts> {
   }
 } */
 
+
+//TOREAD: This is to add a post
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart'; // For kIsWeb

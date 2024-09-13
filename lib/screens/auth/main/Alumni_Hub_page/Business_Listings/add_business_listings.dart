@@ -14,7 +14,7 @@ class AddBusinessListings extends StatefulWidget {
 }
 
 class _AddBusinessListingsState extends State<AddBusinessListings> {
- final BusinessListingsService _businessListingsService = BusinessListingsService();
+ final BusinessListingsService _businessListingsService = BusinessListingsService(); //Use Business Listing services' function that is declared in businesslistings.dart in service folder
   String text = '';
   XFile? _image; // Using XFile for compatibility with web
 

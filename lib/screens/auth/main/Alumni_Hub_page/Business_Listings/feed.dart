@@ -38,6 +38,8 @@ class _FeedState extends State<Feed> {
   }
 } */
 
+
+//TOREAD: This is to only display the business listings that the current logged in user is following and not all the user's business listings
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +60,7 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     return FutureProvider<List<BusinessListingsModel>>.value(
-      value: _businessListingsService.getFeed(FirebaseAuth.instance.currentUser!.uid),
+      value: _businessListingsService.getFeed(FirebaseAuth.instance.currentUser!.uid), //user the getFeed function from businesslistings.dart in service folder to get following user's posts
       initialData: const <BusinessListingsModel>[],
       child: Scaffold(
         body: Container(

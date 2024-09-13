@@ -1202,6 +1202,8 @@ class ListPosts extends StatelessWidget {
   }
 } */
 
+
+//TOREAD: This is to list the posts and how they look like when the post is displayed e.g showing the white card with the post on it and display like icon and comment icon
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

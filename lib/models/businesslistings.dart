@@ -1,3 +1,5 @@
+//TOREAD: This is to pass from the business listing pages to Firebase
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BusinessListingsModel {

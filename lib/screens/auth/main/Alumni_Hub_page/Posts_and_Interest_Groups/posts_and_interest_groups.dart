@@ -1488,7 +1488,7 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
 } */
 
 
-
+//This is to display Posts and Interest Groups page with different tabs such as Posts, Followed User Posts, Liked Posts and Interest Groups
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
