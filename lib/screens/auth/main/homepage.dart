@@ -57,15 +57,18 @@ class _HomePageState extends State<HomePage> {
         child: SingleChildScrollView( // Allows for scrolling when content exceeds the screen height
           child: Column(
             children: [
-              _buildFirstCard(),
+              _buildCareerPortalCard(),
               const Divider(color: Colors.white, thickness: 1), // Horizontal line between cards
-              _buildSecondCard(),
+              _buildDonationCard(),
               const Divider(color: Colors.white, thickness: 1), // Horizontal line between cards
-              _buildThirdCard(),
+              _buildIRCCard(),
               const Divider(color: Colors.white, thickness: 1), // Horizontal line between cards
-              _buildFourthCard(),
+              _buildAdvertisementCard(),
               const Divider(color: Colors.white, thickness: 1), // Horizontal line between cards
-              _buildFifthCard(),
+              _buildSocialMediaCard(),
+              const Divider(color: Colors.white, thickness: 1), // Horizontal line between cards
+              _buildInfoCard(),
+              const Divider(color: Colors.white, thickness: 1), // Horizontal line between cards
             ],
           ),
         ),
@@ -73,7 +76,55 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildFirstCard() {
+  Widget _buildCareerPortalCard() {
+    return Center(
+      child: Container(
+        width: double.infinity, // Match the width to the first card
+        margin: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            const Text(
+              'UNITEN Career Portal',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            InkWell(
+              onTap: () => _launchURL('http://careers.uniten.edu.my/unicap/'),
+              child: Column(
+                children: [
+                  Image.asset(
+                    'lib/assets/logo/career_portal.png',
+                    width: 300,
+                    height: 100,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text('UNITEN Career Portal'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDonationCard() {
     return Center(
       child: Container(
         width: double.infinity, // Set to full width
@@ -160,7 +211,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSecondCard() {
+  Widget _buildIRCCard() {
     return Center(
       child: Container(
         width: double.infinity, // Match the width to the first card
@@ -189,7 +240,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 16.0),
             InkWell(
-              onTap: () => _launchURL('https://www.uniten.edu.my/scholarship-plus-aid/yayasan-canselor-uniten-ycu/contribute-to-ycu/'),
+              onTap: () => _launchURL('https://lib.uniten.edu.my/ulib/'),
               child: Column(
                 children: [
                   Image.asset(
@@ -208,7 +259,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildThirdCard() {
+  Widget _buildAdvertisementCard() {
     return Center(
       child: Container(
         width: double.infinity, // Match the width to the previous cards
@@ -259,7 +310,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildFourthCard() {
+  Widget _buildSocialMediaCard() {
     return Center(
       child: Container(
         width: double.infinity, // Match the width to the previous cards
@@ -314,7 +365,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildFifthCard() {
+  Widget _buildInfoCard() {
     return Center(
       child: Container(
         width: double.infinity, // Match the width to the previous cards
@@ -346,7 +397,16 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: 8.0), // Adds space between the texts
             Text(
-              'University Tenaga Nasional (UNITEN)                | Putrajaya Campus |',
+              'University Tenaga Nasional (UNITEN)',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center, // Centers text within the Text widget
+            ),
+            SizedBox(height: 8.0), // Adds space between the texts
+            Text(
+              '| Putrajaya Campus |',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,

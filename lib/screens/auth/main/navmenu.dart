@@ -1118,7 +1118,7 @@ class _NavMenuState extends State<NavMenu> {
         ),
         drawer: _buildDrawer(context),
         body: Profile(uid: FirebaseAuth.instance.currentUser!.uid,),
-      ),
+      ), 
       Scaffold(
         appBar: AppBar(
           title: const Text('My Card'),
