@@ -199,6 +199,7 @@ class _InterestGroupState extends State<InterestGroup> {
               Expanded(
                 child: ListGroup(), // Assuming this is your ListGroup widget
               ),
+              
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(

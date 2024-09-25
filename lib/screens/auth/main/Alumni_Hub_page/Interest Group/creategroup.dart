@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest%20Group/selectmember.dart';
 import 'package:uniten_alumni_app/services/group.dart';
 
 class CreateGroupPage extends StatefulWidget {
@@ -30,12 +31,19 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
             ElevatedButton(
               onPressed: () async {
                 if (_groupNameController.text.isNotEmpty) {
-                  await GroupService().createGroup(_groupNameController.text);
-                  Navigator.pop(context); // Go back to the group tab
+                  final groupId = await GroupService().createGroup(_groupNameController.text);
+                  // Navigate to UserSelectionPage after creating the group
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserSelectionPage(groupId: groupId),
+                    ),
+                  );
                 }
               },
               child: const Text('Create Group'),
             ),
+            
           ],
         ),
       ),

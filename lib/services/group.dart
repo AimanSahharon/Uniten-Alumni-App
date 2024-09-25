@@ -82,7 +82,7 @@ Future<List<GroupModel>> getAllGroups() async {
     }).toList();
   }
 
-
+/*
   // Create a new group
   Future<void> createGroup(String groupName) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -95,7 +95,22 @@ Future<List<GroupModel>> getAllGroups() async {
         'groupCreated': Timestamp.now(),
       });
     }
+  } */
+ Future<String> createGroup(String groupName) async {
+  final uid = FirebaseAuth.instance.currentUser?.uid;
+
+  if (uid != null) {
+    DocumentReference groupRef = await _firestore.collection('groups').add({
+      'name': groupName,
+      'leader': uid,
+      'members': [uid],
+      'groupCreated': Timestamp.now(),
+    });
+    return groupRef.id; // Return the created group ID
   }
+  throw Exception("User not logged in");
+}
+
 
   // Join an existing group
   Future<void> joinGroup(String groupId) async {
@@ -155,6 +170,19 @@ Future<List<GroupModel>> getAllGroups() async {
         'timestamp': Timestamp.now(),
       });
     }
+  }
+
+  // Delete a group
+  Future<void> deleteGroup(String groupId) async {
+    // First, delete all posts within the group if needed
+    await _firestore.collection('groups').doc(groupId).collection('posts').get().then((snapshot) {
+      for (var doc in snapshot.docs) {
+        doc.reference.delete(); // Delete each post
+      }
+    });
+
+    // Now delete the group itself
+    await _firestore.collection('groups').doc(groupId).delete();
   }
 
   

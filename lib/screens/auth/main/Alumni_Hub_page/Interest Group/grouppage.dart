@@ -50,6 +50,33 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     // Logic for editing the group (navigate to edit page or show form)
   }
 
+  Future<void> _deleteGroup() async {
+    final confirmation = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Group'),
+          content: const Text('Are you sure you want to delete this group?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmation == true) {
+      await GroupService().deleteGroup(widget.group.id); // Add this method in your GroupService
+      Navigator.of(context).pop(); // Optionally pop the page after deletion
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,6 +97,12 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
+            if (_isOwner)
+              ElevatedButton(
+                onPressed: _deleteGroup,
+                child: const Text('Delete Group'),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red), // Optional styling
+              ),
             _isOwner
                 ? ElevatedButton(
                     onPressed: _editGroup,
