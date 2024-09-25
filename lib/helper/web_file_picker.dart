@@ -20,4 +20,5 @@ class WebFilePicker {
     fileInput.click();
     return completer.future;
   }
-}
+} 
+

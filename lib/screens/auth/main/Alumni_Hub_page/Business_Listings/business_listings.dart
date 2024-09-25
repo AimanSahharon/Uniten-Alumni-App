@@ -124,7 +124,7 @@ class _BusinessListingsPageState extends State<BusinessListingsPage> {
                           ),
                         ),
                         const Expanded(
-                          child: BusinessListings(),
+                          child: BusinessListings(), //call BusinessListings function from list_business_listings.dart
                         ),
                       ],
                     ),
@@ -145,7 +145,7 @@ class _BusinessListingsPageState extends State<BusinessListingsPage> {
                           ),
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        child: ElevatedButton(
+                        child: ElevatedButton( //Add business listings button
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => const AddBusinessListings()),
@@ -188,7 +188,7 @@ class _BusinessListingsPageState extends State<BusinessListingsPage> {
                     child: const Column(
                       children: [
                         Expanded(
-                          child: Feed(),
+                          child: Feed(), //Call feed function from feed.dart
                         ),
                       ],
                     ),

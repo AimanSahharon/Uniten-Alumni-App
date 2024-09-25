@@ -1,5 +1,4 @@
 //TOREAD: This is to only display the post that the current logged in user is following and not all the user's posts
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +16,11 @@ class Feed extends StatefulWidget {
 class _FeedState extends State<Feed> {
   final PostService _postService = PostService();
 
+  Future<void> _refreshFeed() async {
+    // Trigger a reload of the user's feed from the PostService
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureProvider<List<PostModel>>.value(
@@ -26,14 +30,18 @@ class _FeedState extends State<Feed> {
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color.fromARGB(255, 255, 0, 0), Color.fromARGB(255, 128, 0, 255)], // Customize gradient colors for background colors
+              colors: [
+                Color.fromARGB(255, 255, 0, 0),
+                Color.fromARGB(255, 128, 0, 255)
+              ], // Customize gradient colors for background colors
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
-          child: const ListPosts(),
+          child: ListPosts(onRefresh: _refreshFeed), // Pass the refresh function here
         ),
       ),
     );
   }
 }
+

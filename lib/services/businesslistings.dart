@@ -11,31 +11,8 @@ import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/services/user.dart'; // For File
 
 class BusinessListingsService {
-  /*Future<void> savePost(String text, File? imageFile) async {
-    String? imageUrl;
 
-    // Upload image to Firebase Storage if there's an image selected
-    if (imageFile != null) {
-      final storageRef = FirebaseStorage.instance.ref().child('business_listing_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-      final uploadTask = await storageRef.putFile(imageFile);
-      imageUrl = await uploadTask.ref.getDownloadURL(); // Get the image URL
-    }
-
-    // Save the post along with the image URL in Firestore
-    await FirebaseFirestore.instance.collection("Business Listing posts").add({
-      'text': text,
-      'imageUrl': imageUrl, // Save the image URL if there is an image
-      'creator': FirebaseAuth.instance.currentUser!.uid,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-
-    Stream<List<BusinessListingsModel>> getBusinessListings() {
-  return FirebaseFirestore.instance.collection('Business Listing posts')
-    .snapshots()
-    .map((snapshot) => snapshot.docs.map((doc) => BusinessListingsModel.fromFirestore(doc)).toList());
-}
-  } */
-
+  //To store business listing posts into the firebase 
  Future<void> savePost(String text, XFile? imageFile) async {
     String? imageUrl;
 
@@ -61,6 +38,7 @@ class BusinessListingsService {
     });
   } 
 
+  //To display all the business listings posts from Firebase
  List<BusinessListingsModel> _postListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) { 
       var data = doc.data() as Map<String, dynamic>; // Cast the data to Map<String, dynamic>
@@ -72,7 +50,7 @@ class BusinessListingsService {
       );
     }).toList();
   }
-
+  //To enable user to search business listings
    List<BusinessListingsModel> _userListFromQuerySnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) { 
       var data = doc.data() as Map<String, dynamic>; // Cast the data to Map<String, dynamic>
@@ -83,10 +61,10 @@ class BusinessListingsService {
         timestamp: data['timestamp'] ?? 0,
       );
     }).toList();
-  }
+  } 
 
 
-
+    //To like a business listing post and keep track of the like count
    Future<void> likePost(BusinessListingsModel post, bool currentUser) async { 
     final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(post.id);
 
@@ -98,7 +76,7 @@ class BusinessListingsService {
     await postRef.update({'likeCount': FieldValue.increment(1)});
   }
   }
-
+   //Get posts based on the logged in user's like 
    Stream<bool> getCurrentUserLike(BusinessListingsModel post) {
   return FirebaseFirestore.instance
       .collection("Business Listing posts")
@@ -142,14 +120,15 @@ class BusinessListingsService {
         .map(_userListFromQuerySnapshot);
   }
 
+  //Get business listings posts based on current logged in users following users
   Future<List<BusinessListingsModel>> getFeed(String uid) async {
     List<String> usersFollowing = await UserService() 
     .getUserFollowing(FirebaseAuth.instance.currentUser?.uid);
 
-    var splitUsersFollowing = partition<dynamic>(usersFollowing, 10);
+    var splitUsersFollowing = partition<dynamic>(usersFollowing, 10); //to display posts by 10 followed users
     inspect(splitUsersFollowing);
 
-
+//create an array to store based on followed users' posts
 List<BusinessListingsModel> feedList = [];
     for(int i = 0; i < splitUsersFollowing.length; i++) {
        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -162,7 +141,8 @@ List<BusinessListingsModel> feedList = [];
 
     }
 
-    feedList.sort((a, b) {
+    //compare the date and display the latest post
+    feedList.sort((a, b) { 
       var adate = a.timestamp;
       var bdate = b.timestamp;
       return bdate.compareTo(adate);
@@ -172,45 +152,7 @@ List<BusinessListingsModel> feedList = [];
     return feedList;
     }
 
-    // Method to edit a post
-/*Future<void> editPost(String postId, String newText) async {
-  final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(postId);
-  final doc = await postRef.get();
-
-  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
-    await postRef.update({
-      'text': newText,
-      'timestamp': FieldValue.serverTimestamp(), // Optionally update the timestamp
-    });
-  } else {
-    throw Exception('You are not authorized to edit this post.');
-  }
-    } */
-
-   /*Future<void> editPost(String postId, String newText, File? newImageFile) async {
-  final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(postId);
-
-  if (newImageFile != null) {
-    // Upload new image if provided
-    final storageRef = FirebaseStorage.instance.ref().child('business_listing_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-    final uploadTask = await storageRef.putFile(newImageFile);
-    final imageUrl = await uploadTask.ref.getDownloadURL();
-
-    // Update post with new image URL
-    await postRef.update({
-      'text': newText,
-      'imageUrl': imageUrl, // Save the new image URL
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-  } else {
-    // Only update text if no new image is provided
-    await postRef.update({
-      'text': newText,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-  }
-} */
-
+//To allow user to edit their business listings
 Future<void> editPost(String postId, String newText, File? newImageFile, String? existingImageUrl) async {
     final postRef = FirebaseFirestore.instance.collection("Business Listing posts").doc(postId);
     final doc = await postRef.get();

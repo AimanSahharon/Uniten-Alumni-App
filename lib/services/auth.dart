@@ -6,14 +6,17 @@ import "package:uniten_alumni_app/models/user.dart";
 class AuthService { 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  UserModel? _userFromFirebaseUser(User? user) {
+  //to display back user's profile from firebase
+  UserModel? _userFromFirebaseUser(User? user) { 
     return user != null ? UserModel(id: user.uid, bannerImageUrl: '', profileImageUrl: '', name: '', email: '') : null;
   }
 
+  //to keep track is the user is logged in or logged out
   Stream<UserModel?> get user {
     return auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
+  //To tell Firebase to store these user's information
   Future<UserModel?> signUp(String email, String password) async { 
     try {
       UserCredential user = (await auth.createUserWithEmailAndPassword(
@@ -38,6 +41,7 @@ class AuthService {
     return null;
   }
 
+  //To authenticate the user and if the credentials are correct then logged in
   Future<UserModel?> signIn(String email, String password) async { 
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
@@ -52,7 +56,7 @@ class AuthService {
     }
     return null;
   }
-
+  //To logout
   Future<void> signOut() async {
     try {
       return await auth.signOut();

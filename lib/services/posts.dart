@@ -37,33 +37,6 @@ class PostService {
       );
     }).toList();
   }
-/*
-  // Save a post to Firestore
- Future<void> savePost(String text, File? imageFile) async {
-    String? imageUrl;
-
-    // Upload image to Firebase Storage if there's an image selected
-    if (imageFile != null) {
-      final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-      final uploadTask = await storageRef.putFile(imageFile);
-      imageUrl = await uploadTask.ref.getDownloadURL(); // Get the image URL
-    }
-
-    // Save the post along with the image URL in Firestore
-    await FirebaseFirestore.instance.collection("posts").add({
-      'text': text,
-      'imageUrl': imageUrl, // Save the image URL if there is an image
-      'creator': FirebaseAuth.instance.currentUser!.uid,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-
-    Stream<List<PostModel>> getPosts() {
-  return FirebaseFirestore.instance.collection('posts')
-    .snapshots()
-    .map((snapshot) => snapshot.docs.map((doc) => PostModel.fromFirestore(doc)).toList());
-}
-  } */
-
 
  Future<void> savePost(String text, XFile? imageFile) async {
     String? imageUrl;
@@ -175,33 +148,6 @@ List<PostModel> feedList = [];
 
     return feedList;
     }
-
-    // Method to edit a post
-/*
-   Future<void> editPost(String postId, String newText, File? newImageFile) async {
-  final postRef = FirebaseFirestore.instance.collection("posts").doc(postId);
-  final doc = await postRef.get();
-  String? newImageUrl;
-
-  if (doc.exists && doc.data()?['creator'] == FirebaseAuth.instance.currentUser?.uid) {
-    // If a new image is provided, upload it and get the new URL
-    if (newImageFile != null) {
-      final storageRef = FirebaseStorage.instance.ref().child('post_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-      final uploadTask = await storageRef.putFile(newImageFile);
-      newImageUrl = await uploadTask.ref.getDownloadURL();
-    } else {
-      newImageUrl = doc.data()?['imageUrl'];
-    }
-
-    await postRef.update({
-      'text': newText,
-      'imageUrl': newImageUrl,
-      'timestamp': FieldValue.serverTimestamp(), // Optionally update the timestamp
-    });
-  } else {
-    throw Exception('You are not authorized to edit this post.');
-  }
-} */
 
 Future<void> editPost(String postId, String newText, File? newImageFile, String? existingImageUrl) async {
     final postRef = FirebaseFirestore.instance.collection("posts").doc(postId);

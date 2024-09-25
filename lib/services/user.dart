@@ -113,33 +113,6 @@ class UserService {
     .delete();
   }
 
-/*
-  Future<void> updateProfile(File? bannerImage, File? profileImage, String name) async {
-    String bannerImageUrl = '';
-    String profileImageUrl = '';
-
-    if (bannerImage != null) {
-      bannerImageUrl = await _utilsService.uploadFile(
-          bannerImage, 'user/profile/${FirebaseAuth.instance.currentUser!.uid}/banner');
-    }
-
-    if (profileImage != null) {
-      profileImageUrl = await _utilsService.uploadFile(
-          profileImage, 'user/profile/${FirebaseAuth.instance.currentUser!.uid}/profile');
-    }
-
-    Map<String, dynamic> data = {}; // Use a plain Map
-
-    if (name.isNotEmpty) data['name'] = name;
-    if (profileImageUrl.isNotEmpty) data['profileImageUrl'] = profileImageUrl;
-    if (bannerImageUrl.isNotEmpty) data['bannerImageUrl'] = bannerImageUrl;
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update(data);
-  } */
-
  Future<void> updateProfile(File? bannerImage, File? profileImage, String name, Uint8List? webProfileImage, Uint8List? webBannerImage) async {
     String bannerImageUrl = '';
     String profileImageUrl = '';

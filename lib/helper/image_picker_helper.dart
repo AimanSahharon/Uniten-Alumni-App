@@ -18,5 +18,5 @@ class ImagePickerHelper {
       return null;
     }
   }
-}
+} 
 
