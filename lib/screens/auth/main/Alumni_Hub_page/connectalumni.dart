@@ -1,6 +1,4 @@
 //TOREAD: This is Connect Alumni page to display all the user's profile to the currently logged in user
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uniten_alumni_app/models/user.dart';
@@ -49,4 +47,4 @@ class _ConnectAlumniState extends State<ConnectAlumni> {
       ),
     );
   }
-}
+} 

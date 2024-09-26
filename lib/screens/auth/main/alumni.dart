@@ -1,7 +1,7 @@
 //TOREAD: This is Alumni page or Alumni hub which is a menu for user to go to other pages
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Business_Listings/business_listings.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest%20Group/interestgroup.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/interestgroup.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/connectalumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/posts_and_interest_groups.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/feed.dart';

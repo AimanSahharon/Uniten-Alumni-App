@@ -1,3 +1,4 @@
+//TOREAD: This page is to display specific group when user tap on the group from the list.
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/services/group.dart';
 import 'package:uniten_alumni_app/models/group.dart';
@@ -72,7 +73,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     );
 
     if (confirmation == true) {
-      await GroupService().deleteGroup(widget.group.id); // Add this method in your GroupService
+      await GroupService().deleteGroup(widget.group.id);
       Navigator.of(context).pop(); // Optionally pop the page after deletion
     }
   }
@@ -96,6 +97,36 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               'Group Leader: ${widget.group.leader}',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 16),
+            /*Text(
+              'Description: ${widget.group.detail}', // Displaying the description
+              style: TextStyle(fontSize: 14),
+            ), */
+            /*const Text(
+              'Description:', // Displaying the description
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+             Text(
+              widget.group.detail, // Displaying the description
+              style: TextStyle(fontSize: 14),
+            ), */
+            Row(
+            children: [
+              const Text(
+                'Description:', // Displaying the description
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 8), // Adds some spacing between the label and the text
+              Expanded( // Ensures that the text takes up the remaining space
+                child: Text(
+                  widget.group.detail, // Displaying the description
+                  style: TextStyle(fontSize: 14),
+                  overflow: TextOverflow.ellipsis, // Optional: handles long text overflow
+                  maxLines: 1, // Optional: limits the description to one line
+                ),
+              ),
+            ],
+          ),
             const SizedBox(height: 16),
             if (_isOwner)
               ElevatedButton(

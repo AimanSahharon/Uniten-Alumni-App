@@ -1,7 +1,10 @@
+//TOREAD: This page is to display the Interest Group page with the 3 tabs as well as the content in each tabs
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest%20Group/creategroup.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest%20Group/grouppage.dart'; // Ensure GroupDetailsPage is imported
-import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest%20Group/list_created_group.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/creategroup.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/grouppage.dart'; // Ensure GroupDetailsPage is imported
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/list_created_group.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/list_joined_group.dart';
 import 'package:uniten_alumni_app/services/group.dart';
 import 'package:uniten_alumni_app/models/group.dart';
 import 'package:uniten_alumni_app/models/grouppost.dart';
@@ -14,6 +17,14 @@ class InterestGroup extends StatefulWidget {
 }
 
 class _InterestGroupState extends State<InterestGroup> {
+  String? uid;
+
+  @override
+  void initState() {
+    super.initState();
+    uid = FirebaseAuth.instance.currentUser?.uid; // Get the UID here
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -133,7 +144,7 @@ class _InterestGroupState extends State<InterestGroup> {
           child: Column(
             children: [
               Expanded(
-                child: _buildJoinedGroupsList(),
+                child: JoinedGroup(uid: uid!),//_buildJoinedGroupsList(),
               ),
             ],
           ),
@@ -142,7 +153,7 @@ class _InterestGroupState extends State<InterestGroup> {
     );
   }
 
-  Widget _buildJoinedGroupsList() {
+ /* Widget _buildJoinedGroupsList() {
     return FutureBuilder<List<GroupModel>>(
       future: GroupService().getJoinedGroups(),
       builder: (context, snapshot) {
@@ -185,7 +196,7 @@ class _InterestGroupState extends State<InterestGroup> {
         }
       },
     );
-  }
+  } */
 
   // Pull-to-refresh for created groups
   Widget _buildCreatedGroupsTab() {
@@ -196,7 +207,7 @@ class _InterestGroupState extends State<InterestGroup> {
           onRefresh: _refreshCreatedGroups,
           child: Column(
             children: [
-              Expanded(
+              const Expanded(
                 child: ListGroup(), // Assuming this is your ListGroup widget
               ),
               

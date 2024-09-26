@@ -1,8 +1,7 @@
+//TOREAD: This page is to allow user to select which alumni can be part of the group and to members perspective the created groups will be in My Interest Group tab
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest%20Group/interestgroup.dart';
-import 'package:uniten_alumni_app/models/user.dart'; // Assuming you have a UserModel defined in this file
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/interestgroup.dart';
 import 'package:uniten_alumni_app/services/user.dart'; // Ensure you have this service for querying users
 
 class UserSelectionPage extends StatefulWidget {
@@ -58,7 +57,7 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => InterestGroup(),
+        builder: (context) => const InterestGroup(),
       ),
     ); // Go back after adding users
   }

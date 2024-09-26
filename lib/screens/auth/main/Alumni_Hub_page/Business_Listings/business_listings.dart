@@ -90,7 +90,7 @@ class _BusinessListingsPageState extends State<BusinessListingsPage> {
           ),
           body: TabBarView(
             children: [
-              // Post Tab Content
+              // business Listing Tab Content
               Stack(
                 children: [
                   Container(

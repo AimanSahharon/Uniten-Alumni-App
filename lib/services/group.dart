@@ -33,6 +33,7 @@ Future<List<GroupModel>> getAllGroups() async {
     return GroupModel(
       id: doc.id,
       name: doc['name'],
+      detail: doc['detail'],
       leader: doc['leader'],
       members: List<String>.from(doc['members']),
       groupCreated: doc['groupCreated'], // Ensure this is a timestamp
@@ -47,7 +48,7 @@ Future<List<GroupModel>> getAllGroups() async {
 
 
   // Fetch the groups the user has joined
-  Future<List<GroupModel>> getJoinedGroups() async {
+ /* Future<List<GroupModel>> getJoinedGroups(String uid) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     QuerySnapshot querySnapshot = await _firestore
         .collection('groups')
@@ -57,12 +58,31 @@ Future<List<GroupModel>> getAllGroups() async {
       return GroupModel(
         id: doc.id,
         name: doc['name'],
+        detail: doc['detail'],
         leader: doc['leader'],
         members: List<String>.from(doc['members']),
         groupCreated: doc['groupCreated'],
       );
     }).toList();
-  }
+  } */
+
+ Future<List<GroupModel>> getJoinedGroups(String uid) async {
+  QuerySnapshot querySnapshot = await _firestore
+      .collection('groups')
+      .where('members', arrayContains: uid)
+      .get();
+  return querySnapshot.docs.map((doc) {
+    return GroupModel(
+      id: doc.id,
+      name: doc['name'],
+      detail: doc['detail'],
+      leader: doc['leader'],
+      members: List<String>.from(doc['members']),
+      groupCreated: doc['groupCreated'],
+    );
+  }).toList();
+}
+
 
   // Fetch the groups the user has created
   Future<List<GroupModel>> getCreatedGroups() async {
@@ -75,6 +95,7 @@ Future<List<GroupModel>> getAllGroups() async {
       return GroupModel(
         id: doc.id,
         name: doc['name'],
+        detail: doc['detail'],
         leader: doc['leader'],
         members: List<String>.from(doc['members']),
         groupCreated: doc['groupCreated'],
@@ -96,12 +117,13 @@ Future<List<GroupModel>> getAllGroups() async {
       });
     }
   } */
- Future<String> createGroup(String groupName) async {
+ Future<String> createGroup(String groupName, String groupDetail) async {
   final uid = FirebaseAuth.instance.currentUser?.uid;
 
   if (uid != null) {
     DocumentReference groupRef = await _firestore.collection('groups').add({
       'name': groupName,
+      'detail': groupDetail,
       'leader': uid,
       'members': [uid],
       'groupCreated': Timestamp.now(),
@@ -151,6 +173,7 @@ Future<List<GroupModel>> getAllGroups() async {
         return GroupModel(
           id: doc.id,
           name: doc.data()['name'],
+          detail: doc.data()['detail'],
           leader: doc.data()['leader'],
           members: List<String>.from(doc.data()['members']),
           groupCreated: doc.data()['groupCreated'],

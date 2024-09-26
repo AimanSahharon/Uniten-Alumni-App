@@ -6,6 +6,9 @@ import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/models/post.dart';
 import 'package:uniten_alumni_app/models/user.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Business_Listings/list_business_listings.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/interestgroup.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/list_joined_group.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/list_created_group.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/addpost.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/listposts.dart';
 import 'package:uniten_alumni_app/services/businesslistings.dart';
@@ -195,7 +198,9 @@ class _ProfileState extends State<Profile> {
                       onRefresh: _refreshPosts, // Pass the refresh logic here
                       child: ListPosts(
                         onRefresh: _refreshPosts, // Pass the refresh function
-                      ), // Posts tab content
+                      ), 
+                      
+                      // Posts tab content
                     ),
                     Consumer<UserModel?>(
                       builder: (context, userModel, child) {
@@ -254,10 +259,15 @@ class _ProfileState extends State<Profile> {
                     ),
                   ],
                 ),
+
+                //Interest  Group Tab Content
                 RefreshIndicator(
                   onRefresh: _refreshInterestGroups, // Pass the refresh logic here
-                  child: const Center(child: Text('Interest Groups Content')), // Placeholder for Interest Groups tab content
+                  child:  JoinedGroup(uid: uid),//Center(child: Text('Interest Groups Content!')), // Placeholder for Interest Groups tab content
                 ),
+
+
+                //Business Listings Tab Content
                 const BusinessListings(), // Business Listings content
               ],
             ),

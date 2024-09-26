@@ -1,7 +1,7 @@
-// listgroup.dart
+// This is to list groups based on created groups by the user which will be passed in interestgroup.dart
 import 'package:flutter/material.dart';
 import 'package:uniten_alumni_app/models/group.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest%20Group/grouppage.dart';
+import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/grouppage.dart';
 import 'package:uniten_alumni_app/services/group.dart';
 
 class ListGroup extends StatelessWidget {
@@ -49,5 +49,7 @@ class ListGroup extends StatelessWidget {
         }
       },
     );
+
+    
   }
 }

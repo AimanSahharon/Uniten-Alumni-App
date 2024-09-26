@@ -67,7 +67,8 @@ class UserService {
         .limit(10) // Show 10 search results
         .snapshots()
         .map(_userListFromQuerySnapshot);
-  }
+  } 
+
 
    Stream<bool> isFollowing(uid, otherId) {
     return FirebaseFirestore.instance
