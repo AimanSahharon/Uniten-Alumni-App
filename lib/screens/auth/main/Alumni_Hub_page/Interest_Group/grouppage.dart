@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class GroupDetailsPage extends StatefulWidget {
   final GroupModel group;
 
-  const GroupDetailsPage({required this.group, Key? key}) : super(key: key);
+  const GroupDetailsPage({required this.group, super.key});
 
   @override
   _GroupDetailsPageState createState() => _GroupDetailsPageState();
@@ -84,7 +84,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       appBar: AppBar(
         title: Text(widget.group.name),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -95,21 +95,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           children: [
             Text(
               'Group Leader: ${widget.group.leader}',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            /*Text(
-              'Description: ${widget.group.detail}', // Displaying the description
-              style: TextStyle(fontSize: 14),
-            ), */
-            /*const Text(
-              'Description:', // Displaying the description
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-             Text(
-              widget.group.detail, // Displaying the description
-              style: TextStyle(fontSize: 14),
-            ), */
             Row(
             children: [
               const Text(
@@ -120,7 +108,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               Expanded( // Ensures that the text takes up the remaining space
                 child: Text(
                   widget.group.detail, // Displaying the description
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                   overflow: TextOverflow.ellipsis, // Optional: handles long text overflow
                   maxLines: 1, // Optional: limits the description to one line
                 ),
@@ -131,8 +119,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
             if (_isOwner)
               ElevatedButton(
                 onPressed: _deleteGroup,
-                child: const Text('Delete Group'),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red), // Optional styling
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: const Text('Delete Group'), // Optional styling
               ),
             _isOwner
                 ? ElevatedButton(

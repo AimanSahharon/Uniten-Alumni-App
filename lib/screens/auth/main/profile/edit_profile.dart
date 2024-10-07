@@ -1,8 +1,6 @@
 //TOREAD: This file is to allow user to edit their profile by uploading their profile images and banner similar to twitter
 import 'dart:io';
 import 'dart:typed_data'; // For web image handling
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb; // For platform check
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

@@ -4,7 +4,6 @@ import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Business_Lis
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/interestgroup.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/connectalumni.dart';
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/posts_and_interest_groups.dart';
-import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Posts_and_Interest_Groups/feed.dart';
 
 class Alumni extends StatefulWidget {
   const Alumni({super.key});

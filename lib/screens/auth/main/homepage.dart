@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: CarouselSlider.builder(
                 itemCount: posterImages.length,

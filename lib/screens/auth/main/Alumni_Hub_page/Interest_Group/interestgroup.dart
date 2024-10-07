@@ -7,7 +7,6 @@ import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Gro
 import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Group/list_joined_group.dart';
 import 'package:uniten_alumni_app/services/group.dart';
 import 'package:uniten_alumni_app/models/group.dart';
-import 'package:uniten_alumni_app/models/grouppost.dart';
 
 class InterestGroup extends StatefulWidget {
   const InterestGroup({super.key});
@@ -153,52 +152,7 @@ class _InterestGroupState extends State<InterestGroup> {
     );
   }
 
- /* Widget _buildJoinedGroupsList() {
-    return FutureBuilder<List<GroupModel>>(
-      future: GroupService().getJoinedGroups(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return const Center(child: Text('Error loading joined groups'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No joined groups available'));
-        } else {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final group = snapshot.data![index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ListTile(
-                  title: Text(
-                    group.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text('Leader: ${group.leader}'),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => GroupDetailsPage(group: group),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-          );
-        }
-      },
-    );
-  } */
-
-  // Pull-to-refresh for created groups
+   // Pull-to-refresh for created groups
   Widget _buildCreatedGroupsTab() {
     return Stack(
       children: [

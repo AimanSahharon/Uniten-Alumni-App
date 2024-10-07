@@ -1,4 +1,4 @@
-
+//TOREAD: This is to pass from the Interest Group pages to Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupModel {

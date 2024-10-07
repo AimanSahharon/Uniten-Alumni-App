@@ -49,16 +49,18 @@ class _SignUpState extends State<SignUp> {
 
                     const SizedBox(height: 20), //add space between the textbox
                     
-                    TextField( //create text box for password
-              onChanged: (val) => setState((){
-                password = val;
-              }),  
-                decoration: const InputDecoration( //to customize the textbox
-                  filled: true, // Enable fill color
-                    fillColor: Colors.white, // Set the fill color
-                      border: OutlineInputBorder(), //creates the outline box of the textbox
-                        hintText: "Enter Password"),
+                    TextField( // Create text box for password
+                    onChanged: (val) => setState(() {
+                      password = val;
+                    }),  
+                    obscureText: true, // Set this to true to hide the password
+                    decoration: const InputDecoration( // Customize the textbox
+                      filled: true, // Enable fill color
+                      fillColor: Colors.white, // Set the fill color
+                      border: OutlineInputBorder(), // Creates the outline box of the textbox
+                      hintText: "Enter Password",
                     ),
+                  ),
                     
                     const SizedBox(height: 20),
                     ElevatedButton( //creates button

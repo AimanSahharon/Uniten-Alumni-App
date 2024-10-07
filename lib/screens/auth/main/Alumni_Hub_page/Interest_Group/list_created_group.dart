@@ -5,7 +5,7 @@ import 'package:uniten_alumni_app/screens/auth/main/Alumni_Hub_page/Interest_Gro
 import 'package:uniten_alumni_app/services/group.dart';
 
 class ListGroup extends StatelessWidget {
-  const ListGroup({Key? key}) : super(key: key);
+  const ListGroup({super.key});
 
   @override
   Widget build(BuildContext context) {

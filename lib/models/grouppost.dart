@@ -1,4 +1,4 @@
-// grouppost.dart
+// This is to pass from the Group posts to Firebase
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 

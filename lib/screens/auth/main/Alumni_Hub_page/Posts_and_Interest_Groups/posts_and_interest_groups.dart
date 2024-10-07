@@ -190,9 +190,9 @@ class _PostsAndInterestGroupsState extends State<PostsAndInterestGroups> {
               ),
 
               // Liked Posts Tab
-              Stack(
+              const Stack(
                 children: [
-                  const LikedPostsScreen(),
+                  LikedPostsScreen(),
                 ],
               ),
             ],

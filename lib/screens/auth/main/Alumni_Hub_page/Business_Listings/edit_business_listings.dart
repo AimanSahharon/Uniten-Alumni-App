@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uniten_alumni_app/models/businesslistings.dart';
 import 'package:uniten_alumni_app/services/businesslistings.dart';
 import 'dart:io';
-import 'dart:typed_data';
 
 class EditPostScreen extends StatefulWidget {
   final BusinessListingsModel post;

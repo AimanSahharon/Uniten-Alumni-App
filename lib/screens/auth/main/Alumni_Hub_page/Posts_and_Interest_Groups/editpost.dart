@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uniten_alumni_app/models/post.dart';
 import 'package:uniten_alumni_app/services/posts.dart';
 import 'dart:io';
-import 'dart:typed_data';
 
 class EditPostScreen extends StatefulWidget {
   final PostModel post;
